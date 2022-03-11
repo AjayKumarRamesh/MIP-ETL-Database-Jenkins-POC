@@ -1,5 +1,3 @@
-def 
-
 pipeline {
     agent any
 
