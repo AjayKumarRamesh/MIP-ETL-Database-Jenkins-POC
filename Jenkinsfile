@@ -1,5 +1,5 @@
 def LIQUIBASE_HOME = "${HOME}/liquibase"
-def LIQUIBASE_VERSION = 4.8.0
+def LIQUIBASE_VERSION = "4.8.0"
 pipeline {
     agent any
 
@@ -17,6 +17,7 @@ pipeline {
             steps {
                 //Display installed Java version
                 sh('java -version')
+                sh('echo ${LIQUIBASE_VERSION}')
                 
                 //Installs Liquibase and adds it to the PATH
                 sh('mkdir ${LIQUIBASE_HOME} && cd ${LIQUIBASE_HOME} && wget -qO- https://github.com/liquibase/liquibase/releases/download/v{LIQUIBASE_VERSION}/liquibase-{LIQUIBASE_VERSION}.tar.gz | tar xvz')
