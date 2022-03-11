@@ -1,5 +1,5 @@
 // Assign Liquibase version
-def LIQUIBASE_VERSION = "4.8.0"
+// def LIQUIBASE_VERSION = "4.8.0"
 
 pipeline {
     agent any
@@ -12,7 +12,9 @@ pipeline {
                 
                 //Add Liquibase Home to the PATH Env variable.
                 PATH = "${PATH}:${LIQUIBASE_HOME}"
-                
+            }
+            scrip {
+                LIQUIBASE_VERSION = "4.8.0"
             }
 
             steps {
