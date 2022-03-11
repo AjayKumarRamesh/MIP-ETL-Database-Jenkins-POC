@@ -11,11 +11,11 @@ db_username='harishk'
 db_password='IbmDB2#12345678'
 
 
-
-git_changes=($(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only))
+## Get the updated DDL files
+git_changes=($(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only | grep *.sql))
 
 if [ -z ${git_changes} ]; then
-    echo "There is no changes for this build, so exit from the job"
+    echo "There is no DB changes for this build, so exit from the job"
     exit 1
 fi 
 
