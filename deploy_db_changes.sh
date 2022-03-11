@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 GIT_PREVIOUS_SUCCESSFUL_COMMIT=$1
@@ -20,10 +20,15 @@ git_changes=($(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-
 if [ -z ${git_changes} ]; then
     echo -e "${yellow}Warning: There is no DB changes for this build.${end_color}"
 else
-    echo -e "\nBelow are the updated sql files.\n${git_changes}\n"
+    echo -e "\nBelow are the updated sql files.\n${git_changes}\n\n"
     for each_change in ${git_changes[@]}; do
-        echo "${blue}--------- Deploying ${each_change} ---------${end_color}"
+        echo -e "${blue}--------- Deploying ${each_change} ---------${end_color}\n"
         liquibase update --changelog-file=${each_change}
+        if [ $? == 0 ]; then
+            echo -e "\n${green}${each_change} has been deployed successfully.${end_color}\n"
+        else
+            echo -e "\n${red}Failed to deploy ${each_change} ${end_color}\n"
+        fi
     done
 fi 
 
