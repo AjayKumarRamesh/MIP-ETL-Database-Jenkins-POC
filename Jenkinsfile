@@ -58,7 +58,6 @@ pipeline {
                 //     }
                 sh ('bash deploy_db_changes.sh ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} ${GIT_COMMIT}')
                     
-                }
                 
             }
         }
