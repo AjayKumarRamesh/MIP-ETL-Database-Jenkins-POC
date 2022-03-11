@@ -26,7 +26,7 @@ pipeline {
                 sh('java -version')
                 
                 
-                sh('echo ${LIQUIBASE_VERSION}')
+                // sh('echo ${LIQUIBASE_VERSION}')
                 // sh('echo ${env.LIQUIBASE_VERSION}')
                 // sh('${env.LIQUIBASE_VERSION}')
                 
