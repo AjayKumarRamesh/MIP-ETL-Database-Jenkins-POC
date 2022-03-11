@@ -53,11 +53,10 @@ pipeline {
                 sh('echo ${GIT_COMMIT}')
                 sh('echo ${WORKSPACE}')
                 sh('echo ${LIQUIBASE_VERSION}')
-                script {
-                    git_changes = sh ( script: 'git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only', returnStdout: true)
-                    for (each_change in ${git_changes}) {
-                        echo ${each_change}
-                    }
+                // script {
+                //     git_changes = sh ( script: 'git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only', returnStdout: true)
+                //     }
+                sh ('bash deploy_db_changes.sh ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} ${GIT_COMMIT}')
                     
                 }
                 
