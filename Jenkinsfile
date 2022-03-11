@@ -17,11 +17,11 @@ pipeline {
                 //Display installed Java version
                 sh('java -version')
                 sh('echo ${LIQUIBASE_VERSION}')
-                sh('echo ${env.LIQUIBASE_VERSION}')
-                sh('${env.LIQUIBASE_VERSION}')
+                // sh('echo ${env.LIQUIBASE_VERSION}')
+                // sh('${env.LIQUIBASE_VERSION}')
                 
                 //Installs Liquibase and adds it to the PATH
-                sh('mkdir ${LIQUIBASE_HOME} && cd ${LIQUIBASE_HOME} && wget -qO- https://github.com/liquibase/liquibase/releases/download/v{LIQUIBASE_VERSION}/liquibase-{LIQUIBASE_VERSION}.tar.gz | tar xvz')
+                sh('mkdir ${LIQUIBASE_HOME} && cd ${LIQUIBASE_HOME} && wget -qO- https://github.com/liquibase/liquibase/releases/download/v{env.LIQUIBASE_VERSION}/liquibase-{env.LIQUIBASE_VERSION}.tar.gz | tar xvz')
                                 
                 //Install DB2 JDBC driver from Maven repo to lib/ folder
                 sh('cd ${LIQUIBASE_HOME}/lib && wget -q https://repo1.maven.org/maven2/com/ibm/db2/jcc/11.5.7.0/jcc-11.5.7.0.jar')
