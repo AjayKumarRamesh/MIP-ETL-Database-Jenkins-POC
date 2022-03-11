@@ -53,7 +53,7 @@ pipeline {
                 sh('echo ${GIT_COMMIT}')
                 sh('echo ${WORKSPACE}')
                 sh('echo ${LIQUIBASE_VERSION}')
-                git_changes = `git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only`
+                git_changes = sh ( script: 'git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only')
                 sh('echo ${git_changes}')
             }
         }
