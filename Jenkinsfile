@@ -50,8 +50,8 @@ pipeline {
                 PATH = "${PATH}:${LIQUIBASE_HOME}"
             }
             steps {
-                sh('echo ${GIT_COMMIT}')
-                sh('echo ${WORKSPACE}')
+                // sh('echo ${GIT_COMMIT}')
+                // sh('echo ${WORKSPACE}')
                 // script {
                 //     git_changes = sh ( script: 'git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only', returnStdout: true)
                 //     }
