@@ -1,4 +1,4 @@
-def LIQUIBASE_VERSION = "4.8.0"
+def 
 
 pipeline {
     agent any
@@ -17,6 +17,9 @@ pipeline {
             steps {
                 //Display installed Java version
                 sh('java -version')
+                
+                // Assign Liquibase version
+                LIQUIBASE_VERSION = "4.8.0"
                 sh('echo ${LIQUIBASE_VERSION}')
                 // sh('echo ${env.LIQUIBASE_VERSION}')
                 // sh('${env.LIQUIBASE_VERSION}')
