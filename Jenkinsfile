@@ -13,7 +13,7 @@ pipeline {
                 //Add Liquibase Home to the PATH Env variable.
                 PATH = "${PATH}:${LIQUIBASE_HOME}"
             }
-            scrip {
+            script {
                 LIQUIBASE_VERSION = "4.8.0"
             }
 
