@@ -48,6 +48,7 @@ pipeline {
                 sh('echo ${GIT_COMMIT}')
                 sh('echo ${WORKSPACE}')
                 sh('git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-only')
+                sh('liquibase --version')
             }
         }
         
