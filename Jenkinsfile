@@ -10,7 +10,7 @@ pipeline {
             environment {
                 //Add Liquibase Home to the PATH Env variable.
                 LIQUIBASE_HOME = "${HOME}/liquibase"
-                LIQUIBASE_VERSION = 4.8.0                
+                LIQUIBASE_VERSION = "4.8.0"                
                 PATH = "${PATH}:${LIQUIBASE_HOME}"
             }
             steps {
