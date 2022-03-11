@@ -1,3 +1,5 @@
+def LIQUIBASE_HOME = "${HOME}/liquibase"
+def LIQUIBASE_VERSION = 4.8.0
 pipeline {
     agent any
 
@@ -5,8 +7,7 @@ pipeline {
         
         stage("Install Liquibase") {
             environment {
-                LIQUIBASE_HOME = "${HOME}/liquibase"
-                LIQUIBASE_VERSION = "4.8.0"
+                
 
                 //Add Liquibase Home to the PATH Env variable.
                 PATH = "${PATH}:${LIQUIBASE_HOME}"
