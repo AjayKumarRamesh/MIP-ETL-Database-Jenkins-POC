@@ -19,6 +19,7 @@ git_changes=($(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}..${GIT_COMMIT} --name-
 
 if [ -z ${git_changes} ]; then
     echo -e "${yellow}Warning: There is no DB changes for this build.${end_color}"
+    exit 0
 else
     echo -e "\nBelow are the updated sql files.\n${git_changes}\n\n"
     for each_change in ${git_changes[@]}; do
