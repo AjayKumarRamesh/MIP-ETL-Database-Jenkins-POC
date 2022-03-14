@@ -4,8 +4,8 @@ from subprocess import PIPE, Popen
 
 GIT_PREVIOUS_SUCCESSFUL_COMMIT = sys.argv[1]
 GIT_COMMIT = sys.argv[2]
-db_username='harishk'
-db_password='IbmDB2#12345678'
+db_username = sys.argv[3]
+db_password = sys.argv[4]
 
 
 

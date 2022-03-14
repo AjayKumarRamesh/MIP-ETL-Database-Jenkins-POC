@@ -5,8 +5,7 @@ GIT_PREVIOUS_SUCCESSFUL_COMMIT=$1
 GIT_COMMIT=$2
 db_username=$3
 db_password=$4
-# db_username='harishk'
-# db_password='IbmDB2#12345678'
+
 
 red="\e[1;31m"
 green="\e[1;32m"
@@ -23,7 +22,7 @@ if [ -z ${git_changes} ]; then
     echo -e "${yellow}Warning: There is no DB changes for this build.${end_color}"
     exit 0
 else
-    echo -e "\nBelow are the updated sql files.\n${git_changes}\n\n"
+    echo -e "\n${blue}Below are the updated sql files.${end_color}\n${git_changes}\n\n"
     for each_change in ${git_changes[@]}; do
         echo -e "${blue}--------- Deploying ${each_change} ---------${end_color}\n"
         liquibase update --changelog-file=${each_change} --username=${db_username} --password=${db_password}
