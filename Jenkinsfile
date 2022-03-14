@@ -35,9 +35,11 @@ pipeline {
                 //Add Liquibase Home to the PATH Env variable.
                 LIQUIBASE_HOME = "${HOME}/liquibase"          
                 PATH = "${PATH}:${LIQUIBASE_HOME}"
+                db_username = 'harishk'
+                db_password = credentials('ibm_db2_credentials')
             }
             steps {
-                sh ('bash deploy_db_changes.sh ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} ${GIT_COMMIT}')
+                sh ('bash deploy_db_changes.sh ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} ${GIT_COMMIT} ${db_username} ${db_password}')
                     
             }
         }
