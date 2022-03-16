@@ -30,6 +30,7 @@ else
             echo -e "\n${green}${each_change} has been deployed successfully.${end_color}\n"
         else
             echo -e "\n${red}Failed to deploy ${each_change} ${end_color}\n"
+            exit 1
         fi
     done
 fi 
