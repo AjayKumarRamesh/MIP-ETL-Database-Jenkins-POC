@@ -19,7 +19,7 @@ pipeline {
                 sh("ibmcloud --version")
 
                 // Installing IBM Cloud container-service plugin
-                sh("ibmcloud plugin install container-service")
+                sh("ibmcloud plugin install container-service -f -q")
 
                 // Installing Python required packages
                 sh('ls -lrt')
