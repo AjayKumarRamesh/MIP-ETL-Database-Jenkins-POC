@@ -15,8 +15,8 @@ pipeline {
                 //Display installed Java version
                 sh('java -version')
                 
-                sh('pyton --verison')
-                sh('pyton3 --verison')
+                sh('python --verison')
+                sh('python3 --verison')
                 
             }
         } //stage
