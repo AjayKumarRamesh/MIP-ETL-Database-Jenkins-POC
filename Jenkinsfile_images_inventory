@@ -14,14 +14,25 @@ pipeline {
 
                 // Installing IBM Cloud
                 sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+
+                // Verify the IBM Cloud CLI Version
                 sh("ibmcloud --version")
 
                 // Installing IBM Cloud container-service plugin
-                sh("ibmcloud plugin install container-service")   
+                sh("ibmcloud plugin install container-service")
                 
             }
-            
+
         } //stage
+
+        stage(""){
+            environment{
+                IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
+            }
+            steps{
+                sh("python get_the_vulnerabilities_images ${IBMCLOUD_CREDS}")
+            }
+        }
 
         
     } //stages

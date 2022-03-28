@@ -86,7 +86,6 @@ if images_returnCode == 0:
             size = human_readable_size(int(size))
 
             num_of_issues = line_data[5].strip()
-            # num_of_issues = line_data[4].split()[0].strip()
             if   'unsupported' in num_of_issues.lower() or 'no' in num_of_issues.lower():
                 continue
             images_table.add_row([count, repository_digest, image_tag, namespace, created, size, num_of_issues])
@@ -106,7 +105,6 @@ if images_returnCode == 0:
                     for each_sn in each_va['security_notices']:
                         v_id = each_va['cve_id']
                         summary = each_sn['summary']
-                        # vulnerability_data.append([v_id, summary])
                         all_v_ids = list(vulnerability_data_dict.keys())
                         if v_id in all_v_ids:
                             temp_v_data = vulnerability_data_dict[v_id]
@@ -114,20 +112,13 @@ if images_returnCode == 0:
                             temp_images_data = temp_v_data['images']
                             temp_images_data.append(f"{image_name}:{image_tag}")
                             vulnerability_data_dict[v_id]['images'] = temp_images_data
-                            # print(vulnerability_data_dict[v_id]['images'])
-                            # sys.exit()
-
-                            # vulnerability_data_dict[v_id]['images'] = f"{temp_v_data['images']}\n{image_name}:{image_tag}"
                         else:
                             temp_v_data = {}
                             temp_v_data['summary'] = summary
                             temp_v_data['count'] = 1
                             temp_image_data = f"{image_name}:{image_tag}"
                             temp_v_data['images'] =  [temp_image_data]
-                            # temp_v_data['images'] =  f"{image_name}:{image_tag}"
                         vulnerability_data_dict[v_id] = temp_v_data
-                        # vulnerability_IDs.append(v_id)
-                        
 
             else:
                 print(f'{red}\nERROR: Failed to execute "{va_cmd}" Command.{end_color}\n')
@@ -153,22 +144,14 @@ for v_id in vulnerability_data_dict:
     v_s_num = v_s_num + 1
 
 
-'''
-v_id = list(set(vulnerability_IDs))
-s_num = 1
-for each in v_id:
-    images_count = vulnerability_IDs.count(each)
-    vulnerability_table.add_row([s_num ,each, images_count])
-    vulnerability_data.append([s_num ,each, images_count])
-    s_num = s_num + 1
-'''
+
 
 # print(images_data)
 # print(vulnerability_data)
 
-# print(images_table)
+print(images_table)
 print()
-# print(vulnerability_table)
+print(vulnerability_table)
 
 # sys.exit()
 
@@ -313,11 +296,7 @@ for each_row in vulnerability_data:
                 td_tag.append(br_tag)
         else:
             td_tag.append(str(cell_data))
-            # tr_tag.append(td_tag)
-
-
-        # td_tag.append(multy_line_data)
-        # td_tag.append(str(each_row[each_td]))
+ 
         tr_tag.append(td_tag)
     table.append(tr_tag)
 
