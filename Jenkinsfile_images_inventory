@@ -12,12 +12,16 @@ pipeline {
         stage("Install Liquibase") {
             steps {
 
-                //Display installed Java version
-                sh('java -version')
+                // Installing IBM Cloud
+                sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+                sh("ibmcloud --version")
+
+                // Installing IBM Cloud container-service plugin
+                sh("ibmcloud plugin install container-service")
+)
                 
-                sh('python -h')
-                sh('python -V')
-                sh('python3 --verison')
+                
+                
                 
             }
         } //stage

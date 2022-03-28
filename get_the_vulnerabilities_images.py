@@ -10,8 +10,10 @@ from email.message import EmailMessage
 from datetime import datetime
 
 
+SECRET_KEY = sys.argv[1]
+
 region = 'us-south'
-SECRET_KEY = 'apikey.json'
+
 
 red = '\033[1;31m'
 green = '\033[1;32m'
@@ -44,7 +46,7 @@ def cmd_execute(cmd):
 
 ### Login into IBM Cloud
 print(f"\n{blue}--------- Logging into IBM Cloud ---------{end_color}")
-login_cmd = f'ibmcloud login -r {region} --apikey @{SECRET_KEY}'
+login_cmd = f'ibmcloud login -r {region} --apikey {SECRET_KEY}'
 print(f"Command: {login_cmd}")
 login_returnCode, login_output, login_error = cmd_execute(login_cmd)
 
