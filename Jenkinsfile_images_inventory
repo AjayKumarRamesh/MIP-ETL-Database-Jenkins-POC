@@ -35,7 +35,7 @@ pipeline {
                 IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
             }
             steps{
-                sh("python get_the_vulnerabilities_images.py ${IBMCLOUD_CREDS}")
+                sh("python get_the_vulnerabilities_images.py ${IBMCLOUD_CREDS_PSW}")
             }
         }
 
