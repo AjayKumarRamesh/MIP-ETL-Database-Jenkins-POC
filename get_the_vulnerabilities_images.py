@@ -96,7 +96,7 @@ if images_returnCode == 0:
             
             
             va_cmd = f'ibmcloud cr va {image_name}:{image_tag} --output json'
-            print(f"Command: {va_cmd}")
+            # print(f"Command: {va_cmd}")
             va_returnCode, va_output, va_error = cmd_execute(va_cmd)
             if va_returnCode == 0:
                 data = va_output[1:-2]
@@ -313,7 +313,7 @@ with open(html_file, "w") as file:
 print("\nSuccessfully Created HTML file.\n")
 
 
-'''
+
 ### Sending mail
 html_file = "images_details.html"
 with open(html_file) as file:
@@ -338,4 +338,3 @@ server.send_message(msg)
 server.quit()
 print('\nSuccessfully sent an email')
 
-'''
