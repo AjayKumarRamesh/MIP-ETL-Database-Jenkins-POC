@@ -1,0 +1,26 @@
+// Assign Liquibase version
+// def LIQUIBASE_VERSION = "4.8.0"
+
+pipeline {
+    agent any
+    options {
+        ansiColor('xterm')
+    }
+
+    stages {
+        
+        stage("Install Liquibase") {
+            steps {
+
+                //Display installed Java version
+                sh('java -version')
+                
+                sh('pyton --verison')
+                sh('pyton3 --verison')
+                
+            }
+        } //stage
+
+        
+    } //stages
+} //pipeline
