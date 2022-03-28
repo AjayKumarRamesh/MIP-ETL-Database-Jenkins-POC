@@ -9,7 +9,7 @@ pipeline {
 
     stages {
         
-        stage("Install Liquibase") {
+        stage("Install IBM Cloud CLI and required Packages") {
             steps {
 
                 // Installing IBM Cloud
@@ -17,13 +17,10 @@ pipeline {
                 sh("ibmcloud --version")
 
                 // Installing IBM Cloud container-service plugin
-                sh("ibmcloud plugin install container-service")
-)
-                
-                
-                
+                sh("ibmcloud plugin install container-service")   
                 
             }
+            
         } //stage
 
         
