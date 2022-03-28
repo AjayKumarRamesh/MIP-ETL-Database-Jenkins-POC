@@ -150,8 +150,8 @@ for v_id in vulnerability_data_dict:
 # print(vulnerability_data)
 
 print(images_table)
-print()
-print(vulnerability_table)
+# print()
+# print(vulnerability_table)
 
 # sys.exit()
 
