@@ -20,6 +20,9 @@ pipeline {
 
                 // Installing IBM Cloud container-service plugin
                 sh("ibmcloud plugin install container-service")
+
+                // Installing Python required packages
+                sh("pip install -r requirements.txt")
                 
             }
 
