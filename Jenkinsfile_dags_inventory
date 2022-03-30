@@ -33,7 +33,7 @@ pipeline {
         stage("Fethcing IBM Cloud Conatiner Vulnerabilities Image Inventory"){
             environment{
                 IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
-                // recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com'
+                // recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
                 recipient_list = 'kolanu.harish@ibm.com'
             }
             steps{
