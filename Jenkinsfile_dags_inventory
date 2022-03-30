@@ -1,0 +1,46 @@
+// Assign Liquibase version
+// def LIQUIBASE_VERSION = "4.8.0"
+
+pipeline {
+    agent any
+    options {
+        ansiColor('xterm')
+    }
+
+    stages {
+        
+        stage("Install IBM Cloud CLI and required Packages") {
+            steps {
+
+                // Installing IBM Cloud
+                sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+
+                // Verify the IBM Cloud CLI Version
+                sh("ibmcloud --version")
+
+                // Installing IBM Cloud container-service plugin
+                sh("ibmcloud plugin install container-service -f -q")
+                sh("ibmcloud plugin install container-registry -f -q")
+
+
+                // Installing Python required packages
+                sh("pip install -r requirements.txt")
+                
+            }
+
+        } //stage
+
+        stage("Fethcing IBM Cloud Conatiner Vulnerabilities Image Inventory"){
+            environment{
+                IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
+                // recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com'
+                recipient_list = 'kolanu.harish@ibm.com'
+            }
+            steps{
+                sh("python dags_inventory.py ${IBMCLOUD_CREDS_PSW} ${recipient_list}")
+            }
+        }
+
+        
+    } //stages
+} //pipeline
