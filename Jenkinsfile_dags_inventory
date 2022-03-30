@@ -12,7 +12,7 @@ pipeline {
         stage("checkout MAP-ETL-Framework"){
             steps {
                 dir('MAP-ETL-Framework'){
-                    git credentialsId: 'sangita_id_rsa',
+                    // git credentialsId: 'sangita_id_rsa',
                     url: 'https://github.ibm.com/CIO-MAP/MAP-ETL-Framework.git'
                 }
                 sh 'pwd'
