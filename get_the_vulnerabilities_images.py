@@ -11,6 +11,7 @@ from datetime import datetime
 
 
 SECRET_KEY = sys.argv[1]
+recipient_list = sys.argv[2]
 
 region = 'us-south'
 
@@ -136,8 +137,7 @@ for v_id in vulnerability_data_dict:
     summary = vulnerability_data_dict[v_id]['summary']
     v_count = vulnerability_data_dict[v_id]['count']
     images = vulnerability_data_dict[v_id]['images']
-    # print(images)
-    # sys.exit()
+
 
     vulnerability_data.append([v_s_num ,v_id, summary, v_count, images])
     vulnerability_table.add_row([v_s_num ,v_id, summary, v_count, images])
@@ -166,6 +166,7 @@ headertitle = soup.new_tag('title')
 headertitle.append('Image Vulnerabilities Details')
 htmlheaders.append(headertitle)
 style = soup.new_tag('style', type='text/css')
+style.append('body {font-family: Times New Roman}')
 style.append('h3 {font-weight:bold; font-family: monospace; color:#3f038c;}')
 style.append('.result_table,.result_table th,.result_table tr,.result_table td {  border: 2px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;}')
 
@@ -324,10 +325,10 @@ msg = EmailMessage()
 msg['From'] = 'mapfunc@us.ibm.com'
 msg['Subject'] = 'IBM Cloud Container Registry Images Details'
 # msg['To'] = 'kolanu.harish@ibm.com, bbotev@bg.ibm.com, akumarr2@in.ibm.com, nagendrac@in.ibm.com, sbeeramm@in.ibm.com'
-msg['To'] = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com'
+# msg['To'] = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com'
 # msg['Cc'] = 'souvik.dutta@ibm.com'
 
-# msg['To'] = recipient_list
+msg['To'] = recipient_list
 # if cc_list:
 #     msg['Cc'] = cc_list
 
