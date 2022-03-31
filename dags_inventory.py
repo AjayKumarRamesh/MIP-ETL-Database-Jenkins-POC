@@ -39,7 +39,7 @@ def cmd_execute(cmd):
 
 def change_dir(repo_path, branch):
     dags_dir = 'dags'
-    dags_path = f"{repo_path}\\{dags_dir}"
+    dags_path = os.path.join(repo_path,dags_dir)
     os.chdir(dags_path)
     os.system(f'git checkout {branch}')
     all_dir_files = os.listdir()
