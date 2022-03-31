@@ -20,48 +20,40 @@ pipeline {
                 sh 'ls -lrt'
             }//steps
 
-            // steps {
-            //     dir('MAP-ETL-Framework'){
-            //         git credentialsId: 'sangita_id_rsa' ,
-            //         url: 'ssh://git@github.ibm.com:CIO-MAP/MAP-ETL-Framework.git'
-            //     }
-            //     sh 'pwd'
-            //     sh 'ls -lrt'
-            // }//steps
 
         }//stage
         
-        // stage("Install IBM Cloud CLI and required Packages") {
-        //     steps {
+        stage("Install IBM Cloud CLI and required Packages") {
+            steps {
 
-        //         // Installing IBM Cloud
-        //         sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+                // Installing IBM Cloud
+                sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
 
-        //         // Verify the IBM Cloud CLI Version
-        //         sh("ibmcloud --version")
+                // Verify the IBM Cloud CLI Version
+                sh("ibmcloud --version")
 
-        //         // Installing IBM Cloud container-service plugin
-        //         sh("ibmcloud plugin install container-service -f -q")
-        //         sh("ibmcloud plugin install container-registry -f -q")
+                // Installing IBM Cloud container-service plugin
+                sh("ibmcloud plugin install container-service -f -q")
+                sh("ibmcloud plugin install container-registry -f -q")
 
 
-        //         // Installing Python required packages
-        //         sh("pip install -r requirements.txt")
+                // Installing Python required packages
+                sh("pip install -r requirements.txt")
                 
-        //     }//steps
+            }//steps
 
-        // } //stage
+        } //stage
 
-        // stage("DAGs Inventory"){
-        //     environment{
-        //         IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
-        //         // recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
-        //         recipient_list = 'kolanu.harish@ibm.com'
-        //     }
-        //     steps{
-        //         sh("python dags_inventory.py ${IBMCLOUD_CREDS_PSW} ${recipient_list}")
-        //     }
-        // }//stage
+        stage("DAGs Inventory"){
+            environment{
+                IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
+                // recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
+                recipient_list = 'kolanu.harish@ibm.com'
+            }
+            steps{
+                sh("python dags_inventory.py ${IBMCLOUD_CREDS_PSW} 'MAP-ETL-Framework' ${recipient_list}")
+            }
+        }//stage
 
         
     } //stages

@@ -13,7 +13,8 @@ import re
 
 
 SECRET_KEY = sys.argv[1]
-recipient_list = sys.argv[2]
+repo_name = sys.argv[2]
+recipient_list = sys.argv[3]
 region = 'us-south'
 
 red = '\033[1;31m'
@@ -109,7 +110,8 @@ for each_cluster in cluster_info:
 
     print(f"{blue}--------- {each_cluster} ---------{end_color}")
     ### Cluster Configuration
-    all_dir_files = change_dir("C:\\Work\\Repos\\MAP-ETL-Framework", branch_name)
+    repo_path = os.path.join(pwd, repo_name)
+    all_dir_files = change_dir(repo_path, branch_name)
     cluster_config_cmd = f"ibmcloud ks cluster config --cluster {each_cluster}"
     print(f"Command: {cluster_config_cmd}")
     cc_returnCode, cc_output, cc_error = cmd_execute(cluster_config_cmd)
