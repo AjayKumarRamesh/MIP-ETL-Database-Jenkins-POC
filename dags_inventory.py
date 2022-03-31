@@ -81,7 +81,7 @@ def get_variable_name(variable_str, pod_name, cluster_variables, cluster_name):
 
 ### Login into IBM Cloud
 print(f"\n{blue}--------- Logging into IBM Cloud ---------{end_color}")
-login_cmd = f'ibmcloud login -r {region} --apikey @{SECRET_KEY}'
+login_cmd = f'ibmcloud login -r {region} --apikey {SECRET_KEY}'
 print(f"Command: {login_cmd}")
 login_returnCode, login_output, login_error = cmd_execute(login_cmd)
 
