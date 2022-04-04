@@ -51,7 +51,7 @@ pipeline {
                 // recipient_list = 'kolanu.harish@ibm.com'
             }
             steps{
-                sh("python dags_inventory.py ${IBMCLOUD_CREDS_PSW} 'MAP-ETL-Framework' ${recipient_list}")
+                sh("python dags_inventory.py ${IBMCLOUD_CREDS_PSW} 'MAP-ETL-Framework' '${recipient_list}'")
             }
         }//stage
 
