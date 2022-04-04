@@ -1,0 +1,143 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-data-pvc
+  namespace: sonarqube
+spec:
+  storageClassName: ibmc-file-gold
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-extensions-pvc
+  namespace: sonarqube
+spec:
+  storageClassName: ibmc-file-gold
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonarqube-config
+  namespace: sonarqube
+  labels:
+    app: postgres
+data:
+  url: jdbc:postgresql://postgres:5432/postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarqube
+  namespace: sonarqube
+  labels:
+    app: sonarqube
+spec:
+  selector:
+    matchLabels:
+      app: sonarqube
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sonarqube
+    spec:
+      containers:
+        - name: sonarqube
+          image: sonarqube:latest
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+              cpu: 2000m
+              memory: 2048Mi
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: "/opt/sonarqube/data/"
+              name: sonar-data
+            - mountPath: "/opt/sonarqube/extensions/"
+              name: sonar-extensions
+          env:
+            - name: "SONARQUBE_JDBC_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: username
+            - name: "SONARQUBE_JDBC_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: password
+            - name: "SONARQUBE_JDBC_URL"
+              valueFrom:
+                configMapKeyRef:
+                  name: sonarqube-config
+                  key: url
+      volumes:
+        - name: sonar-data
+          persistentVolumeClaim:
+            claimName: sonar-data-pvc
+        - name: sonar-extensions
+          persistentVolumeClaim:
+            claimName: sonar-extensions-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarqube
+  namespace: sonarqube
+  labels:
+    app: sonarqube
+spec:
+  ports:
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 80-tcp
+      port: 80
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: sonarqube
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: sonarqube-ingress
+  namespace: sonarqube
+  annotations:
+    kubernetes.io/ingress.class: "private-iks-k8s-nginx"
+spec:
+  tls:
+  - hosts:
+    - airflow.map-mktsys-dev.limited-use.ibm.com
+    secretName: airflow-internal-domain-cert
+  rules:
+  - host: airflow.map-mktsys-dev.limited-use.ibm.com
+    http:
+      paths:
+      - path: /sonarqube
+        backend:
+          serviceName: sonarqube
+          servicePort: 9000

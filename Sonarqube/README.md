@@ -10,6 +10,11 @@
     $ kubectl apply -f postgres.yml
 ~~~
 
+### Deploying SonarQube ConfigMaps, PVC(PersistentVolumeClaim), Deployment, Service and Ingress
+~~~
+    $ kubectl apply -f sonarqube.yml
+~~~
+
 
 
 
