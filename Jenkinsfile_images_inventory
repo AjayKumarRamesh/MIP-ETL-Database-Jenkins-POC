@@ -36,7 +36,7 @@ pipeline {
                 recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
             }
             steps{
-                sh("python get_the_vulnerabilities_images.py ${IBMCLOUD_CREDS_PSW} ${recipient_list}")
+                sh("python get_the_vulnerabilities_images.py ${IBMCLOUD_CREDS_PSW} '${recipient_list}'")
             }
         }
 

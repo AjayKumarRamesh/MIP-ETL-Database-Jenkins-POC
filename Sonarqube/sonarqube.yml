@@ -119,7 +119,6 @@ spec:
       targetPort: 9000
   selector:
     app: sonarqube
-  type: LoadBalancer
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -140,4 +139,4 @@ spec:
       - path: /sonarqube
         backend:
           serviceName: sonarqube
-          servicePort: 9000
+          servicePort: 80
