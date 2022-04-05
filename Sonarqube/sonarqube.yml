@@ -132,11 +132,9 @@ spec:
     - host: airflow.map-mktsys-dev.limited-use.ibm.com
       http:
         paths:
-          - backend:
-              service:
-                name: sonarqube
-                port:
-                  number: 9000
-            path: /
+          - path: /
             pathType: ImplementationSpecific
+            backend:
+              serviceName: sonarqube
+              servicePort: 9000
         
