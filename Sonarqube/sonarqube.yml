@@ -1,4 +1,26 @@
 ---
+apiVersion: 'kubernetes-client.io/v1'
+kind: ExternalSecret
+metadata:
+  name: sonarqube-secrets
+  namespace: sonarqube
+spec:
+  backendType: ibmcloudSecretsManager
+  keyByName: true 
+  data:
+    - key: DEV_LDAP_BIND_PASSWORD
+      property: payload
+      name: LDAP_BIND_PASSWORD
+      secretType: arbitrary
+    - key: SONARQUBE_POSTGRESQL_CREDENTIALS
+      property: username
+      name: SONARQUBE_JDBC_USERNAME
+      secretType: username_password
+    - key: SONARQUBE_POSTGRESQL_CREDENTIALS
+      property: password
+      name: SONARQUBE_JDBC_PASSWORD
+      secretType: username_password
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -30,7 +52,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sonarqube-config
+  name: sonar-properties-configmap
   namespace: sonarqube
   labels:
     app: postgres
@@ -57,6 +79,7 @@ spec:
       containers:
         - name: sonarqube
           image: sonarqube:latest
+          imagePullPolicy: Always
           resources:
             requests:
               cpu: 500m
@@ -67,27 +90,20 @@ spec:
           ports:
             - containerPort: 9000
               protocol: TCP
-          volumeMounts:
-            - mountPath: "/opt/sonarqube/data/"
-              name: sonar-data
-            - mountPath: "/opt/sonarqube/extensions/"
-              name: sonar-extensions
+          envFrom:
+            - secretRef:
+                name: sonarqube-secrets
           env:
-            - name: "SONARQUBE_JDBC_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secrets
-                  key: username
-            - name: "SONARQUBE_JDBC_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secrets
-                  key: password
             - name: "SONARQUBE_JDBC_URL"
               valueFrom:
                 configMapKeyRef:
-                  name: sonarqube-config
-                  key: url
+                  name: sonar-properties-configmap
+                  key: url 
+          volumeMounts:
+            - name: sonar-data
+              mountPath: "/opt/sonarqube/data/"
+            - name: sonar-extensions
+              mountPath: "/opt/sonarqube/extensions/"                        
       volumes:
         - name: sonar-data
           persistentVolumeClaim:
