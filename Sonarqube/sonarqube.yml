@@ -58,6 +58,53 @@ metadata:
     app: postgres
 data:
   url: jdbc:postgresql://postgres:5432/postgres
+  sonar.properties: |
+    # --------------------------------------------------------------------------------------------------
+    # WEB SERVER
+
+    # Web context. When set, it must start with forward slash (for example /sonarqube)
+    sonar.web.context=/sonarqube
+
+    # --------------------------------------------------------------------------------------------------
+    # LDAP CONFIGURATION
+
+    # Enable the LDAP feature
+    sonar.security.realm=LDAP
+
+    # Set to true when connecting to a LDAP server using a case-insensitive setup.
+    sonar.authenticator.downcase=true
+
+    # URL of the LDAP server. Note that if you are using ldaps, then you should install the server certificate into the Java truststore.
+    ldap.url=ldaps://bluepages.ibm.com:636/
+
+    # Bind DN is the username of an LDAP user to connect (or bind) with. Leave this blank for anonymous access to the LDAP directory (optional)
+    ldap.bindDn=cn=cio_dyna_bai-000009_prod,ou=bluepages,o=ibm.com
+
+    # Bind Password is the password of the user to connect with. Leave this blank for anonymous access to the LDAP directory (optional)
+    # ldap.bindPassword=password
+    
+
+    # USER MAPPING
+
+    # Distinguished Name (DN) of the root node in LDAP from which to search for users (mandatory)
+    # ldap.user.baseDn=cn=cio_dyna_bai-000009_prod,dc=ibm,dc=com
+
+    # LDAP user request. (default: (&(objectClass=inetOrgPerson)(uid={login})) )
+    # ldap.user.request=(&(objectClass=ibm-nestedGroup)(sAMAccountName={login}))
+    
+    # Attribute in LDAP defining the user’s real name. (default: cn)
+    # ldap.user.realNameAttribute=cn
+
+    # Attribute in LDAP defining the user’s email. (default: mail)
+    # ldap.user.emailAttribute=email
+
+    # GROUP MAPPING
+
+    # Distinguished Name (DN) of the root node in LDAP from which to search for groups. (optional, default: empty)
+    # ldap.group.baseDn=cn=groups,dc=ibm,dc=com
+
+    # LDAP group request (default: (&(objectClass=groupOfUniqueNames)(uniqueMember={dn})) )
+    # ldap.group.request=(&(objectClass=group)(member={dn}))
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -103,7 +150,14 @@ spec:
             - name: sonar-data
               mountPath: "/opt/sonarqube/data/"
             - name: sonar-extensions
-              mountPath: "/opt/sonarqube/extensions/"                        
+              mountPath: "/opt/sonarqube/extensions/"
+            - name: config-volume
+              mountPath: /kubeconf/
+          lifecycle:
+            postStart:
+              exec:
+                command: ["cp", "/kubeconf/sonar.properties", "/opt/sonarqube/conf/"]
+                        
       volumes:
         - name: sonar-data
           persistentVolumeClaim:
@@ -111,6 +165,9 @@ spec:
         - name: sonar-extensions
           persistentVolumeClaim:
             claimName: sonar-extensions-pvc
+        - name: config-volume
+          configMap:
+            name: sonar-properties-configmap
 ---
 apiVersion: v1
 kind: Service
@@ -148,7 +205,7 @@ spec:
     - host: airflow.map-mktsys-dev.limited-use.ibm.com
       http:
         paths:
-          - path: /
+          - path: /sonarqube
             pathType: ImplementationSpecific
             backend:
               serviceName: sonarqube
