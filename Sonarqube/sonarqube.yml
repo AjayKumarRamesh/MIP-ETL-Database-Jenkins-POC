@@ -10,7 +10,7 @@ spec:
   data:
     - key: DEV_LDAP_BIND_PASSWORD
       property: payload
-      name: LDAP_BIND_PASSWORD
+      name: LDAP_BINDPASSWORD
       secretType: arbitrary
     - key: SONARQUBE_POSTGRESQL_CREDENTIALS
       property: username
