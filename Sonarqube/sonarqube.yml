@@ -65,6 +65,7 @@ data:
     # Web context. When set, it must start with forward slash (for example /sonarqube)
     sonar.web.context=/sonarqube
 
+    sonar.log.level=DEBUG
     # --------------------------------------------------------------------------------------------------
     # LDAP CONFIGURATION
 
@@ -146,6 +147,28 @@ spec:
                 configMapKeyRef:
                   name: sonar-properties-configmap
                   key: url 
+            - name: "SONAR_SECURITY_REALM"
+              value: "LDAP"
+            - name: "SONAR_AUTHENTICATOR_DOWNCASE"
+              value: "true"
+            - name: "LDAP_URL"
+              value: "ldaps://bluepages.ibm.com:636/"
+            - name: "LDAP_BINDDN"
+              value: "uid=C-TKFU897,c=us,ou=bluepages,o=ibm.com"
+            - name: "LDAP_USER_BASEDN"
+              value: "ou=bluepages,o=ibm.com"
+            - name: "LDAP_USER_REQUEST"
+              value: "(preferredIdentity={login})"
+            - name: "LDAP_USER_REALNAMEATTRIBUTE"
+              value: "cn"
+            - name: "LDAP_USER_EMAILATTRIBUTE"
+              value: "mail"
+            - name: "LDAP_GROUP_BASEDN"
+              value: "ou=ibmgroups,o=ibm.com"
+            - name: "LDAP_GROUP_REQUEST"
+              value: "(&(objectClass=ibm-nestedGroup)(uniquemember={dn}))"
+            - name: "LDAP_GROUP_IDATTRIBUTE"
+              value: "cn"
           volumeMounts:
             - name: sonar-data
               mountPath: "/opt/sonarqube/data/"
