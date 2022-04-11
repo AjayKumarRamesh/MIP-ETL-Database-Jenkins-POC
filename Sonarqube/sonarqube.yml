@@ -153,6 +153,8 @@ spec:
               value: "true"
             - name: "LDAP_URL"
               value: "ldaps://bluepages.ibm.com:636/"
+            - name: "LDAP_STARTTLS"
+              value: "false"
             - name: "LDAP_BINDDN"
               value: "uid=C-TKFU897,c=us,ou=bluepages,o=ibm.com"
             - name: "LDAP_USER_BASEDN"
