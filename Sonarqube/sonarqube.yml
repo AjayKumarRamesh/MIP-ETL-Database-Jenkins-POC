@@ -65,47 +65,58 @@ data:
     # Web context. When set, it must start with forward slash (for example /sonarqube)
     sonar.web.context=/sonarqube
 
+
+    #--------------------------------------------------------------------------------------------------
+    # LOGGING
+
+    # Supported values are INFO (default), ERROR, WARN, DEBUG and TRACE
     sonar.log.level=DEBUG
+
+
     # --------------------------------------------------------------------------------------------------
     # LDAP CONFIGURATION
 
     # Enable the LDAP feature
-    # sonar.security.realm=LDAP
+    sonar.security.realm=LDAP
 
     # Set to true when connecting to a LDAP server using a case-insensitive setup.
-    # sonar.authenticator.downcase=true
+    sonar.authenticator.downcase=true
 
     # URL of the LDAP server. Note that if you are using ldaps, then you should install the server certificate into the Java truststore.
-    # ldap.url=ldaps://bluepages.ibm.com:636/
+    ldap.url=ldaps://bluepages.ibm.com:636/
 
     # Bind DN is the username of an LDAP user to connect (or bind) with. Leave this blank for anonymous access to the LDAP directory (optional)
-    # ldap.bindDn=cn=cio_dyna_bai-000009_prod,ou=bluepages,o=ibm.com
+    ldap.bindDn=uid=C-TKFU897,c=us,ou=bluepages,o=ibm.com
 
     # Bind Password is the password of the user to connect with. Leave this blank for anonymous access to the LDAP directory (optional)
-    # ldap.bindPassword=password
+    # ldap.bindPassword=password from environment variable
     
 
     # USER MAPPING
 
     # Distinguished Name (DN) of the root node in LDAP from which to search for users (mandatory)
-    # ldap.user.baseDn=cn=cio_dyna_bai-000009_prod,dc=ibm,dc=com
+    ldap.user.baseDn=ou=bluepages,o=ibm.com
 
     # LDAP user request. (default: (&(objectClass=inetOrgPerson)(uid={login})) )
-    # ldap.user.request=(&(objectClass=ibm-nestedGroup)(sAMAccountName={login}))
+    ldap.user.request=(preferredIdentity={login})
     
     # Attribute in LDAP defining the user’s real name. (default: cn)
-    # ldap.user.realNameAttribute=cn
+    ldap.user.realNameAttribute=cn
 
     # Attribute in LDAP defining the user’s email. (default: mail)
-    # ldap.user.emailAttribute=email
+    ldap.user.emailAttribute=mail
+
 
     # GROUP MAPPING
 
     # Distinguished Name (DN) of the root node in LDAP from which to search for groups. (optional, default: empty)
-    # ldap.group.baseDn=cn=groups,dc=ibm,dc=com
+    ldap.group.baseDn=ou=ibmgroups,o=ibm.com
 
     # LDAP group request (default: (&(objectClass=groupOfUniqueNames)(uniqueMember={dn})) )
-    # ldap.group.request=(&(objectClass=group)(member={dn}))
+    ldap.group.request=(&(objectClass=ibm-nestedGroup)(uniquemember={dn}))
+
+    # Property used to specifiy the attribute to be used for returning the list of user groups in the compatibility mode. (default: cn)
+    ldap.group.idAttribute=cn
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -147,30 +158,30 @@ spec:
                 configMapKeyRef:
                   name: sonar-properties-configmap
                   key: url 
-            - name: "SONAR_SECURITY_REALM"
-              value: "LDAP"
-            - name: "SONAR_AUTHENTICATOR_DOWNCASE"
-              value: "true"
-            - name: "LDAP_URL"
-              value: "ldaps://bluepages.ibm.com:636/"
-            - name: "LDAP_STARTTLS"
-              value: "false"
-            - name: "LDAP_BINDDN"
-              value: "uid=C-TKFU897,c=us,ou=bluepages,o=ibm.com"
-            - name: "LDAP_USER_BASEDN"
-              value: "ou=bluepages,o=ibm.com"
-            - name: "LDAP_USER_REQUEST"
-              value: "(preferredIdentity={login})"
-            - name: "LDAP_USER_REALNAMEATTRIBUTE"
-              value: "cn"
-            - name: "LDAP_USER_EMAILATTRIBUTE"
-              value: "mail"
-            - name: "LDAP_GROUP_BASEDN"
-              value: "ou=ibmgroups,o=ibm.com"
-            - name: "LDAP_GROUP_REQUEST"
-              value: "(&(objectClass=ibm-nestedGroup)(uniquemember={dn}))"
-            - name: "LDAP_GROUP_IDATTRIBUTE"
-              value: "cn"
+            # - name: "SONAR_SECURITY_REALM"
+            #   value: "LDAP"
+            # - name: "SONAR_AUTHENTICATOR_DOWNCASE"
+            #   value: "true"
+            # - name: "LDAP_URL"
+            #   value: "ldaps://bluepages.ibm.com:636/"
+            # - name: "LDAP_STARTTLS"
+            #   value: "false"
+            # - name: "LDAP_BINDDN"
+            #   value: "uid=C-TKFU897,c=us,ou=bluepages,o=ibm.com"
+            # - name: "LDAP_USER_BASEDN"
+            #   value: "ou=bluepages,o=ibm.com"
+            # - name: "LDAP_USER_REQUEST"
+            #   value: "(preferredIdentity={login})"
+            # - name: "LDAP_USER_REALNAMEATTRIBUTE"
+            #   value: "cn"
+            # - name: "LDAP_USER_EMAILATTRIBUTE"
+            #   value: "mail"
+            # - name: "LDAP_GROUP_BASEDN"
+            #   value: "ou=ibmgroups,o=ibm.com"
+            # - name: "LDAP_GROUP_REQUEST"
+            #   value: "(&(objectClass=ibm-nestedGroup)(uniquemember={dn}))"
+            # - name: "LDAP_GROUP_IDATTRIBUTE"
+            #   value: "cn"
           volumeMounts:
             - name: sonar-data
               mountPath: "/opt/sonarqube/data/"
