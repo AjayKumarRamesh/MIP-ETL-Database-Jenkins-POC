@@ -28,13 +28,14 @@ pipeline {
                 scannerBaseHome = "${HOME}/scannerBaseHome"
                 scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
                 SONAR_SCANNER_OPTS = "-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"
-                // SONAR_LOGIN = "-Dsonar.login=${}"
             }
             steps{
                 // Importing the certificates
                 withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
                     sh "keytool -importcert -keystore cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                 }
+
+                // checking the Code Quality
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                     sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN}")
                 }
