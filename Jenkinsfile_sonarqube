@@ -26,7 +26,7 @@ pipeline {
         stage("Importing the certificates"){
             steps{
                 sh 'which java'
-                sh 'ls /opt/java/openjdk/'
+                sh 'ls /opt/java/openjdk/lib/'
                 sh 'pwd'
                 // withCredentials(file(credentialsId: 'secret', variable: 'FILE')]){
                 //     sh 'keytool -importcert -keystore cacerts -file $FILE -trustcacerts -alias "ibm_root"'
