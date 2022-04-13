@@ -18,7 +18,7 @@ pipeline {
                 script {
                     dir_name = sh("ls ${scannerHome} | grep sonar-scanner-")
                     sh("ls ${scannerHome}")
-                    sh("echo ${scannerHome}")
+                    sh("echo ${dir_name}")
                 }
                 
                 sh("cp -rf sonar-project.properties /opt/sonar-scanner/${dir_name}/conf/")
