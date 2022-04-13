@@ -35,6 +35,8 @@ pipeline {
                     sh "keytool -importcert -keystore cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                     // sh 'export SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"'
                     // sh("${scannerHome}/bin/sonar-scanner")
+                    sh 'ls ${WORKSPACE}'
+                    sh 'env | grep "SONAR"'
                 }
             }
         } //stage 
