@@ -24,7 +24,7 @@ pipeline {
 
         stage("Sonarqube Code Quality Check"){
             environment{
-                scannerHome = '/opt/sonar-scanner'
+                scannerHome = '/${HOME}/sonarScanner_home'
             }
             // steps {
             //     withSonarQubeEnv('sonarqube') {
