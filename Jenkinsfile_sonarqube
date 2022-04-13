@@ -26,10 +26,13 @@ pipeline {
             environment{
                 scannerHome = '/opt/sonar-scanner'
             }
-            steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh("${scannerHome}/bin/sonar-scanner")
-                }
+            // steps {
+            //     withSonarQubeEnv('sonarqube') {
+            //         sh("${scannerHome}/bin/sonar-scanner")
+            //     }
+            // }
+            steps{
+                sh("${scannerHome}/bin/sonar-scanner")
             }
         } //stage
     } //stages
