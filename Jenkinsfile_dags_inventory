@@ -18,10 +18,8 @@ pipeline {
                 }
                 sh 'pwd'
                 sh 'ls -lrt'
-            }//steps
-
-
-        }//stage
+            }
+        } //stage
         
         stage("Install IBM Cloud CLI and required Packages") {
             steps {
