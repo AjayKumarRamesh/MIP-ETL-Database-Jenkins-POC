@@ -23,34 +23,21 @@ pipeline {
 
         } //stage
 
-        stage("Importing the certificates"){
+        stage("Sonarqube Code Quality Check"){
             environment{
                 scannerBaseHome = "${HOME}/scannerBaseHome"
                 scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
                 SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"
             }
             steps{
+                // Importing the certificates
                 withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
-                    // sh 'keytool -importcert -keystore cacerts -file $FILE -trustcacerts -alias "ibm_root"'
                     sh "keytool -importcert -keystore cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
-                    // sh 'export SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"'
                     // sh("${scannerHome}/bin/sonar-scanner")
-                    sh 'ls ${WORKSPACE}'
-                    sh 'env | grep "SONAR"'
-                    sh("${scannerHome}/bin/sonar-scanner")
                 }
+                sh("${scannerHome}/bin/sonar-scanner")
             }
-        } //stage 
-
-        // stage("Sonarqube Code Quality Check"){
-        //     environment{
-        //         scannerBaseHome = "${HOME}/scannerBaseHome"
-        //         scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
-        //     }
-        //     steps{
-        //         sh("${scannerHome}/bin/sonar-scanner")
-        //     }
-        // } //stage
+        } //stage
     } //stages
 } //pipeline
 
