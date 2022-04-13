@@ -8,7 +8,7 @@ pipeline {
         
         stage("Install Sonar Scanner") {
             environment{
-                scannerHome = '/${HOME}/sonarScanner_home'
+                scannerHome = '${HOME}/sonarScanner_home'
             }
             steps {
 
@@ -18,6 +18,7 @@ pipeline {
                 script {
                     dir_name = sh("ls ${scannerHome} | grep sonar-scanner-")
                     sh("ls ${scannerHome}")
+                    sh("echo ${scannerHome}")
                 }
                 
                 sh("cp -rf sonar-project.properties /opt/sonar-scanner/${dir_name}/conf/")
@@ -38,7 +39,7 @@ pipeline {
 
         stage("Sonarqube Code Quality Check"){
             environment{
-                scannerHome = '/${HOME}/sonarScanner_home'
+                scannerHome = '${HOME}/sonarScanner_home'
             }
             steps{
                 sh("${scannerHome}/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner")
