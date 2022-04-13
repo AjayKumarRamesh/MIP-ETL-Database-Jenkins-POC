@@ -30,7 +30,8 @@ pipeline {
                 // sh 'pwd'
                 // sh 'echo ${WORKSPACE}'
                 withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
-                    sh 'keytool -importcert -keystore cacerts -file $FILE -trustcacerts -alias "ibm_root"'
+                    // sh 'keytool -importcert -keystore cacerts -file $FILE -trustcacerts -alias "ibm_root"'
+                    sh "keytool -importcert -keystore cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                     sh 'export SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"'
                 }
             }
