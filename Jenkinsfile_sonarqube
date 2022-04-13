@@ -17,10 +17,7 @@ pipeline {
                 // sh("dir_name=$(ls /opt/sonar-scanner)")
                 
                 sh("dir_name=\$(ls ${scannerHome} | grep sonar-scanner-)")
-                sh("ls ${scannerHome}")
                 sh("echo ${dir_name}")
-            
-                
                 sh("cp -rf sonar-project.properties /opt/sonar-scanner/${dir_name}/conf/")
                 // sh("cp -rf sonar-project.properties ${scannerHome}/sonar-scanner-4.7.0.2747-linux/conf/")                
                 
