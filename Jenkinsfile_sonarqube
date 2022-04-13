@@ -32,7 +32,7 @@ pipeline {
             //     }
             // }
             steps{
-                sh("${scannerHome}/bin/sonar-scanner")
+                sh("${scannerHome}/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner")
             }
         } //stage
     } //stages
