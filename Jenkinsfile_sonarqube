@@ -37,19 +37,20 @@ pipeline {
                     // sh("${scannerHome}/bin/sonar-scanner")
                     sh 'ls ${WORKSPACE}'
                     sh 'env | grep "SONAR"'
+                    sh("${scannerHome}/bin/sonar-scanner")
                 }
             }
         } //stage 
 
-        stage("Sonarqube Code Quality Check"){
-            environment{
-                scannerBaseHome = "${HOME}/scannerBaseHome"
-                scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
-            }
-            steps{
-                sh("${scannerHome}/bin/sonar-scanner")
-            }
-        } 
-    } //stage
+        // stage("Sonarqube Code Quality Check"){
+        //     environment{
+        //         scannerBaseHome = "${HOME}/scannerBaseHome"
+        //         scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
+        //     }
+        //     steps{
+        //         sh("${scannerHome}/bin/sonar-scanner")
+        //     }
+        // } //stage
+    } //stages
 } //pipeline
 
