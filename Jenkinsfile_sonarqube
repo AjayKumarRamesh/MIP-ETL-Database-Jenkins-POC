@@ -8,19 +8,15 @@ pipeline {
         
         stage("Install Sonar Scanner") {
             environment{
-                scannerHome = '${HOME}/sonarScanner_home'
+                scannerBaseHome = "${HOME}/scannerBaseHome"
+                scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
+
             }
             steps {
 
-                // Installing IBM Cloud
-                sh("mkdir ${scannerHome} && cd ${scannerHome} && wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip && unzip sonar-scanner.zip && rm -rf sonar-scanner.zip")
-                // sh("dir_name=$(ls /opt/sonar-scanner)")
-                
-                sh("export sonar_dir_name=\$(ls ${scannerHome} | grep sonar-scanner-)")
-                sh("echo ${sonar_dir_name}")
-                sh("cp -rf sonar-project.properties /opt/sonar-scanner/${sonar_dir_name}/conf/")
-                // sh("cp -rf sonar-project.properties ${scannerHome}/sonar-scanner-4.7.0.2747-linux/conf/")                
-                
+                // Install Sonar Scanner
+                sh("mkdir ${scannerBaseHome} && cd ${scannerBaseHome} && wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip && unzip sonar-scanner.zip && rm -rf sonar-scanner.zip")
+                sh("cp -rf sonar-project.properties ${scannerHome}/conf/")               
             }
 
         } //stage
@@ -36,10 +32,11 @@ pipeline {
 
         stage("Sonarqube Code Quality Check"){
             environment{
-                scannerHome = '${HOME}/sonarScanner_home'
+                scannerBaseHome = "${HOME}/scannerBaseHome"
+                scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
             }
             steps{
-                sh("${scannerHome}/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner")
+                sh("${scannerHome}/bin/sonar-scanner")
             }
         } //stage
     } //stages
