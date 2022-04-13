@@ -16,9 +16,9 @@ pipeline {
                 sh("mkdir ${scannerHome} && cd ${scannerHome} && wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip && unzip sonar-scanner.zip && rm -rf sonar-scanner.zip")
                 // sh("dir_name=$(ls /opt/sonar-scanner)")
                 
-                sh("export dir_name=\$(ls ${scannerHome} | grep sonar-scanner-)")
-                sh("echo ${dir_name}")
-                sh("cp -rf sonar-project.properties /opt/sonar-scanner/${dir_name}/conf/")
+                sh("export sonar_dir_name=\$(ls ${scannerHome} | grep sonar-scanner-)")
+                sh("echo ${sonar_dir_name}")
+                sh("cp -rf sonar-project.properties /opt/sonar-scanner/${sonar_dir_name}/conf/")
                 // sh("cp -rf sonar-project.properties ${scannerHome}/sonar-scanner-4.7.0.2747-linux/conf/")                
                 
             }
