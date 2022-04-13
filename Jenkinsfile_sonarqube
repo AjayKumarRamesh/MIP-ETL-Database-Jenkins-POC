@@ -29,7 +29,7 @@ pipeline {
                 // sh 'ls /opt/java/openjdk/lib/'
                 // sh 'pwd'
                 // sh 'echo ${WORKSPACE}'
-                withCredentials(file(credentialsId: 'secret', variable: 'FILE')]){
+                withCredentials([file(credentialsId: 'secret', variable: 'FILE')]){
                     sh 'keytool -importcert -keystore cacerts -file $FILE -trustcacerts -alias "ibm_root"'
                     sh 'export SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"'
                 }
