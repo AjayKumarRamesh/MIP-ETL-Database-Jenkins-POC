@@ -26,11 +26,6 @@ pipeline {
             environment{
                 scannerHome = '/${HOME}/sonarScanner_home'
             }
-            // steps {
-            //     withSonarQubeEnv('sonarqube') {
-            //         sh("${scannerHome}/bin/sonar-scanner")
-            //     }
-            // }
             steps{
                 sh("${scannerHome}/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner")
             }
