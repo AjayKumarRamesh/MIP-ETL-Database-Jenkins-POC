@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage("Cloning required repositories"){
             steps {
+                // Cloning MAP-ETL-Framework-AirflowK8s Repo
                 sh("mkdir ${HOME}/MAP-ETL-Framework-AirflowK8s")
                 dir("${HOME}/MAP-ETL-Framework-AirflowK8s"){
                     git credentialsId: 'sangita_id_rsa',
@@ -14,6 +15,7 @@ pipeline {
                         branch: 'master'
                 }
 
+                // Cloning MAP-ETL-Framework Repo
                 sh("mkdir ${HOME}/MAP-ETL-Framework")
                 dir("${HOME}/MAP-ETL-Framework"){
                     git credentialsId: 'sangita_id_rsa',
@@ -60,7 +62,7 @@ pipeline {
                 // checking the Code Quality
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                     sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN}")
-                    // sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectBaseDir="./MAP-ETL-Framework"")
+                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectBaseDir=${HOME}/MAP-ETL-Framework-AirflowK8s")
 
                 }
                 
