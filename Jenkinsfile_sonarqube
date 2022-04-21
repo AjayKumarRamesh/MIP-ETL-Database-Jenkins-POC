@@ -51,7 +51,7 @@ pipeline {
             environment{
                 scannerBaseHome = "${HOME}/scannerBaseHome"
                 scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
-                SONAR_SCANNER_OPTS = "-Djavax.net.ssl.trustStore=${WORKSPACE}/cacerts"
+                SONAR_SCANNER_OPTS = "-Djavax.net.ssl.trustStore=${HOME}/cacerts"
             }
             steps{
                 // Importing the certificates
