@@ -33,7 +33,7 @@ pipeline {
         stage("Install Sonar Scanner") {
             environment{
                 scannerBaseHome = "${HOME}/scannerBaseHome"
-                scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
+                SCANNER_HOME = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
 
             }
             steps {
@@ -41,8 +41,8 @@ pipeline {
                 // Install Sonar Scanner
                 sh("mkdir ${scannerBaseHome} && cd ${scannerBaseHome} && wget --no-verbose -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip && unzip -qq sonar-scanner.zip && rm -rf sonar-scanner.zip")
 
-                // copy the sonar-project.properties into conf directory of scannerHome
-                sh("cp -rf sonar-project.properties ${scannerHome}/conf/")               
+                // copy the sonar-project.properties into conf directory of SCANNER_HOME
+                // sh("cp -rf sonar-project.properties ${SCANNER_HOME}/conf/")               
             }
 
         } //stage
