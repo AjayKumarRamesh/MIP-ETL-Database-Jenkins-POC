@@ -13,6 +13,14 @@ pipeline {
                         url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework-AirflowK8s.git",
                         branch: 'master'
                 }
+
+                sh("mkdir ${HOME}/MAP-ETL-Framework")
+                dir("${HOME}/MAP-ETL-Framework"){
+                    git credentialsId: 'sangita_id_rsa',
+                        url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework.git",
+                        branch: 'master'
+                }
+
                 
                 sh("ls ${HOME}")
                 sh("ls ${HOME}/MAP-ETL-Framework-AirflowK8s")
