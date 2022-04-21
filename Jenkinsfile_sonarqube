@@ -50,14 +50,14 @@ pipeline {
         stage("Sonarqube Code Quality Check"){
             environment{
                 scannerBaseHome = "${HOME}/scannerBaseHome"
-                scannerHome = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
+                SCANNER_HOME = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
                 SONAR_SCANNER_OPTS = "-Djavax.net.ssl.trustStore=${HOME}/cacerts"
                 SONAR_HOST_URL = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
             }
 
             steps{
                 // Importing the certificates
-                sh("cd ${HOME}")
+                // sh("cd ${HOME}")
                 withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
                     sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                 }
@@ -66,12 +66,12 @@ pipeline {
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                     
 
-                    sh('echo -e "\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n"')
-                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectKey='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectBaseDir=${WORKSPACE}")
+                    sh('echo -e "\n\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n"')
+                    sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectKey='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectBaseDir=${WORKSPACE}")
                     
     
-                    sh('echo -e "\033[1;34m-------- Scanning MAP-ETL-Framework-AirflowK8s Repo --------\033[0m\n"')
-                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MAP-ETL-Framework-AirflowK8s' -Dsonar.projectKey='MAP-ETL-Framework-AirflowK8s' -Dsonar.projectBaseDir=${HOME}/MAP-ETL-Framework-AirflowK8s")
+                    sh('echo -e "\n\033[1;34m-------- Scanning MAP-ETL-Framework-AirflowK8s Repo --------\033[0m\n"')
+                    sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MAP-ETL-Framework-AirflowK8s' -Dsonar.projectKey='MAP-ETL-Framework-AirflowK8s' -Dsonar.projectBaseDir=${HOME}/MAP-ETL-Framework-AirflowK8s")
 
                 }
                 
