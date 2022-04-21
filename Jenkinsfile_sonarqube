@@ -60,9 +60,11 @@ pipeline {
                     sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                 }
 
+                def sonar_server = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
+                
                 // checking the Code Quality
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
-                    def sonar_server = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
+                    
 
                     sh('echo -e "\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n"')
                     sh("${scannerHome}/bin/sonar-scanner -Dsonar.host.url=${sonar_server} -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectKey='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectBaseDir=${WORKSPACE}/${JOB_NAME}")
