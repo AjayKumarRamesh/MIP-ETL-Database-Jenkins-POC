@@ -14,7 +14,8 @@ pipeline {
                         branch: 'master'
                 }
                 
-                sh("ls") 
+                sh("ls ${HOME}")
+                sh("ls ${HOME}/MAP-ETL-Framework-AirflowK8s")
                 sh("pwd")   
             }
         } //stage
