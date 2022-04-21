@@ -14,13 +14,13 @@ pipeline {
                 }
                 sh 'pwd'
                 sh 'ls -lrt'
-            }
-            steps {
+            
+           
                 dir("${HOME}/MIP-Dashboard"){
                     git credentialsId: 'sangita_id_rsa',
                         url: 'ssh://git@github.ibm.com/CIO-MAP/MIP-Dashboard.git', 
                         branch: 'master'
-                }
+                
                 sh 'pwd'
                 sh 'ls -lrt'
             }
