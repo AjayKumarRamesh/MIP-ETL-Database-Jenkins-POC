@@ -8,9 +8,12 @@ pipeline {
         stage("Cloning required repositories"){
             steps {
                 sh("mkdir ${HOME}/MAP-ETL-Framework-AirflowK8s")
-                dir("${HOME}/MAP-ETL-Framework-AirflowK8s")
-                git credentialsId: 'sangita_id_rsa',
-                    url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework-AirflowK8s.git"
+                dir("${HOME}/MAP-ETL-Framework-AirflowK8s"){
+                    git credentialsId: 'sangita_id_rsa',
+                        url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework-AirflowK8s.git",
+                        branch: 'master'
+                }
+                
                 sh("ls") 
                 sh("pwd")   
             }
