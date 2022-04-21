@@ -5,8 +5,6 @@ pipeline {
     }
 
     stages {
-        stages {
-
         stage("Cloning required repositories"){
             steps {
                 dir("${HOME}/MAP-ETL-Framework-AirflowK8s"){
