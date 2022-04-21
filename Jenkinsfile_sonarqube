@@ -67,7 +67,7 @@ pipeline {
                     
 
                     sh('echo -e "\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n"')
-                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectKey='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectBaseDir=${WORKSPACE}/${JOB_NAME}")
+                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectKey='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectBaseDir=${WORKSPACE}")
                     
     
                     sh('echo -e "\033[1;34m-------- Scanning MAP-ETL-Framework-AirflowK8s Repo --------\033[0m\n"')
