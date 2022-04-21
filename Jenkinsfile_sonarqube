@@ -57,14 +57,14 @@ pipeline {
                 // Importing the certificates
                 sh("cd ${HOME}")
                 withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
-                    sh "keytool -importcert -keystore cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
+                    sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                 }
 
                 // checking the Code Quality
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
 
                     sh('echo -e "\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n"')
-                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectBaseDir=${WORKSPACE}")
+                    sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectBaseDir=${WORKSPACE}/${JOB_NAME}")
                     
     
                     sh('echo -e "\033[1;34m-------- Scanning MAP-ETL-Framework-AirflowK8s Repo --------\033[0m\n"')
