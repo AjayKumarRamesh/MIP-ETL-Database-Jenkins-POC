@@ -5,6 +5,28 @@ pipeline {
     }
 
     stages {
+        stages {
+
+        stage("Cloning required repositories"){
+            steps {
+                dir("${HOME}/MAP-ETL-Framework-AirflowK8s"){
+                    git credentialsId: 'sangita_id_rsa',
+                        url: 'ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework-AirflowK8s.git', 
+                        branch: 'master'
+                }
+                sh 'pwd'
+                sh 'ls -lrt'
+            }
+            steps {
+                dir("${HOME}/MIP-Dashboard"){
+                    git credentialsId: 'sangita_id_rsa',
+                        url: 'ssh://git@github.ibm.com/CIO-MAP/MIP-Dashboard.git', 
+                        branch: 'master'
+                }
+                sh 'pwd'
+                sh 'ls -lrt'
+            }
+        } //stage
         
         stage("Install Sonar Scanner") {
             environment{
@@ -38,6 +60,8 @@ pipeline {
                 // checking the Code Quality
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                     sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN}")
+                    // sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectBaseDir="./MAP-ETL-Framework"")
+
                 }
                 
             }
