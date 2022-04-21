@@ -7,17 +7,26 @@ pipeline {
     stages {
         stage("Cloning required repositories"){
             steps {
+
+                script {
+                    AirflowK8s_DIR = "MAP-ETL-Framework-AirflowK8s"
+                    AirflowK8s_DIR_PATH = "${HOME}/${AirflowK8s_DIR}"
+
+                    ETL_Framework_DIR = "MAP-ETL-Framework"
+                    ETL_Framework_DIR_PATH = "${HOME}/${ETL_Framework_DIR}"
+                }
+
                 // Cloning MAP-ETL-Framework-AirflowK8s Repo
-                sh("mkdir ${HOME}/MAP-ETL-Framework-AirflowK8s")
-                dir("${HOME}/MAP-ETL-Framework-AirflowK8s"){
+                sh("mkdir ${AirflowK8s_DIR_PATH}")
+                dir("${AirflowK8s_DIR_PATH}"){
                     git credentialsId: 'sangita_id_rsa',
                         url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework-AirflowK8s.git",
                         branch: 'master'
                 }
 
                 // Cloning MAP-ETL-Framework Repo
-                sh("mkdir ${HOME}/MAP-ETL-Framework")
-                dir("${HOME}/MAP-ETL-Framework"){
+                sh("mkdir ${ETL_Framework_DIR_PATH}")
+                dir("${ETL_Framework_DIR_PATH}"){
                     git credentialsId: 'sangita_id_rsa',
                         url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework.git",
                         branch: 'master'
@@ -56,6 +65,15 @@ pipeline {
             }
 
             steps{
+                
+                script {
+                    AirflowK8s_DIR = "MAP-ETL-Framework-AirflowK8s"
+                    AirflowK8s_DIR_PATH = "${HOME}/${AirflowK8s_DIR}"
+
+                    ETL_Framework_DIR = "MAP-ETL-Framework"
+                    ETL_Framework_DIR_PATH = "${HOME}/${ETL_Framework_DIR}"
+                }
+
                 // Importing the certificates
                 // sh("cd ${HOME}")
                 withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
@@ -66,12 +84,12 @@ pipeline {
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                     
 
-                    sh('echo -e "\n\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n"')
+                    sh("echo -e '\n\033[1;34m-------- Scanning MIP-ETL-Database-Jenkins-POC Repo --------\033[0m\n'")
                     sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectKey='MIP-ETL-Database-Jenkins-POC' -Dsonar.projectBaseDir=${WORKSPACE}")
                     
     
-                    sh('echo -e "\n\033[1;34m-------- Scanning MAP-ETL-Framework-AirflowK8s Repo --------\033[0m\n"')
-                    sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName='MAP-ETL-Framework-AirflowK8s' -Dsonar.projectKey='MAP-ETL-Framework-AirflowK8s' -Dsonar.projectBaseDir=${HOME}/MAP-ETL-Framework-AirflowK8s")
+                    sh("echo -e '\n\033[1;34m-------- Scanning ${AirflowK8s_DIR} Repo --------\033[0m\n'")
+                    sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${AirflowK8s_DIR} -Dsonar.projectKey=${AirflowK8s_DIR} -Dsonar.projectBaseDir=${AirflowK8s_DIR_PATH}")
 
                 }
                 
