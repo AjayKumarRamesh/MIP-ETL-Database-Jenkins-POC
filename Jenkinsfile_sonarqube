@@ -5,40 +5,6 @@ pipeline {
     }
 
     stages {
-        stage("Cloning required repositories"){
-            steps {
-
-                script {
-                    AirflowK8s_DIR = "MAP-ETL-Framework-AirflowK8s"
-                    AirflowK8s_DIR_PATH = "${HOME}/${AirflowK8s_DIR}"
-
-                    ETL_Framework_DIR = "MAP-ETL-Framework"
-                    ETL_Framework_DIR_PATH = "${HOME}/${ETL_Framework_DIR}"
-                }
-
-                // Cloning MAP-ETL-Framework-AirflowK8s Repo
-                sh("mkdir ${AirflowK8s_DIR_PATH}")
-                dir("${AirflowK8s_DIR_PATH}"){
-                    git credentialsId: 'sangita_id_rsa',
-                        url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework-AirflowK8s.git",
-                        branch: 'master'
-                }
-
-                // Cloning MAP-ETL-Framework Repo
-                sh("mkdir ${ETL_Framework_DIR_PATH}")
-                dir("${ETL_Framework_DIR_PATH}"){
-                    git credentialsId: 'sangita_id_rsa',
-                        url: "ssh://git@github.ibm.com/CIO-MAP/MAP-ETL-Framework.git",
-                        branch: 'master'
-                }
-
-                
-                sh("ls ${HOME}")
-                sh("ls ${HOME}/MAP-ETL-Framework-AirflowK8s")
-                sh("pwd")   
-            }
-        } //stage
-        
         stage("Install Sonar Scanner") {
             environment{
                 scannerBaseHome = "${HOME}/scannerBaseHome"
@@ -93,8 +59,8 @@ pipeline {
                             sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
                         }
                     } 
-                } // script
-            }
+                } //script
+            } //steps
         } //stage
     } //stages
 } //pipeline
