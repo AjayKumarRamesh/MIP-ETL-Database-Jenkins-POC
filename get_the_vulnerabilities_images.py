@@ -62,6 +62,8 @@ else:
 ## Get the cluster vulnerabilities images
 namespaces = ['map-dev-namespace','mip-test-namespace','mip-prod-namespace']
 # namespace = 'map-dev-namespace'
+v_s_num = 1 
+count = 1
 for namespace in namespaces:
     images_cmd = f'ibmcloud cr images --restrict {namespace} --format "{{{{ .Repository }}}}@@{{{{ .Digest }}}}@@{{{{ .Tag }}}}@@{{{{ .Created }}}}@@{{{{ .Size }}}}@@{{{{ .SecurityStatus.Status }}}}"'
     print(f"Command: {images_cmd}")
@@ -71,7 +73,7 @@ for namespace in namespaces:
             all_lines = images_output.splitlines()
             all_images = []
             issues = []
-            count = 1
+            
             vulnerability_IDs = []
             for each_line in all_lines:
                 line_data = each_line.split('@@')
@@ -127,7 +129,7 @@ for namespace in namespaces:
                     print(f'{red}\nERROR: Failed to execute "{va_cmd}" Command.{end_color}\n')
                     print(va_error)
                     sys.exit(va_returnCode)
-            images_data.append(['','','','','','',''])
+            # images_data.append(['','','','','','',''])
 
     else:
         print(f'{red}\nERROR: Failed to execute "ibmcloud cr images" Command.{end_color}\n')
@@ -135,7 +137,7 @@ for namespace in namespaces:
         sys.exit(images_returnCode)
 
 
-    v_s_num = 1 
+    
     for v_id in vulnerability_data_dict:
         summary = vulnerability_data_dict[v_id]['summary']
         v_count = vulnerability_data_dict[v_id]['count']
