@@ -33,8 +33,8 @@ pipeline {
         stage("Fethcing IBM Cloud Conatiner Vulnerabilities Image Inventory"){
             environment{
                 IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
-                // recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
-                recipient_list = 'kolanu.harish@ibm.com'
+                recipient_list = 'kolanu.harish@ibm.com, cunico@us.ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
+                // recipient_list = 'kolanu.harish@ibm.com'
             }
             steps{
                 sh("python get_the_vulnerabilities_images.py ${IBMCLOUD_CREDS_PSW} '${recipient_list}'")
