@@ -60,88 +60,91 @@ else:
 
 
 ## Get the cluster vulnerabilities images
-namespace = 'map-dev-namespace'
-images_cmd = f'ibmcloud cr images --restrict {namespace} --format "{{{{ .Repository }}}}@@{{{{ .Digest }}}}@@{{{{ .Tag }}}}@@{{{{ .Created }}}}@@{{{{ .Size }}}}@@{{{{ .SecurityStatus.Status }}}}"'
-print(f"Command: {images_cmd}")
-images_returnCode, images_output, images_error = cmd_execute(images_cmd)
-if images_returnCode == 0:
-    if images_output:
-        all_lines = images_output.splitlines()
-        all_images = []
-        issues = []
-        count = 1
-        vulnerability_IDs = []
-        for each_line in all_lines:
-            line_data = each_line.split('@@')
+namespaces = ['map-dev-namespace','mip-test-namespace','mip-prod-namespace']
+# namespace = 'map-dev-namespace'
+for namespace in namespaces:
+    images_cmd = f'ibmcloud cr images --restrict {namespace} --format "{{{{ .Repository }}}}@@{{{{ .Digest }}}}@@{{{{ .Tag }}}}@@{{{{ .Created }}}}@@{{{{ .Size }}}}@@{{{{ .SecurityStatus.Status }}}}"'
+    print(f"Command: {images_cmd}")
+    images_returnCode, images_output, images_error = cmd_execute(images_cmd)
+    if images_returnCode == 0:
+        if images_output:
+            all_lines = images_output.splitlines()
+            all_images = []
+            issues = []
+            count = 1
+            vulnerability_IDs = []
+            for each_line in all_lines:
+                line_data = each_line.split('@@')
 
-            image_name = line_data[0].strip()
-            digest = line_data[1].strip()
-            repository_digest = f"{image_name}@{digest}"
+                image_name = line_data[0].strip()
+                digest = line_data[1].strip()
+                repository_digest = f"{image_name}@{digest}"
 
-            image_tag = line_data[2].strip()
+                image_tag = line_data[2].strip()
 
-            c_date = int(line_data[3].strip())
-            created = datetime.fromtimestamp(c_date).strftime("%Y/%m/%d")
+                c_date = int(line_data[3].strip())
+                created = datetime.fromtimestamp(c_date).strftime("%Y/%m/%d")
 
-            size = line_data[4].strip()
-            size = human_readable_size(int(size))
+                size = line_data[4].strip()
+                size = human_readable_size(int(size))
 
-            num_of_issues = line_data[5].strip()
-            if   'unsupported' in num_of_issues.lower() or 'no' in num_of_issues.lower():
-                continue
-            images_table.add_row([count, repository_digest, image_tag, namespace, created, size, num_of_issues])
-            images_data.append([count, repository_digest, image_tag, namespace, created, size, num_of_issues])
+                num_of_issues = line_data[5].strip()
+                if   'unsupported' in num_of_issues.lower() or 'no' in num_of_issues.lower():
+                    continue
+                images_table.add_row([count, repository_digest, image_tag, namespace, created, size, num_of_issues])
+                images_data.append([count, repository_digest, image_tag, namespace, created, size, num_of_issues])
 
-            count = count + 1
+                count = count + 1
 
-            
-            
-            va_cmd = f'ibmcloud cr va {image_name}:{image_tag} --output json'
-            # print(f"Command: {va_cmd}")
-            va_returnCode, va_output, va_error = cmd_execute(va_cmd)
-            if va_returnCode == 0:
-                data = va_output[1:-2]
-                json_data = json.loads(data)
-                for each_va in json_data['vulnerabilities']:
-                    for each_sn in each_va['security_notices']:
-                        v_id = each_va['cve_id']
-                        summary = each_sn['summary']
-                        all_v_ids = list(vulnerability_data_dict.keys())
-                        if v_id in all_v_ids:
-                            temp_v_data = vulnerability_data_dict[v_id]
-                            vulnerability_data_dict[v_id]['count'] = temp_v_data['count'] + 1
-                            temp_images_data = temp_v_data['images']
-                            temp_images_data.append(f"{image_name}:{image_tag}")
-                            vulnerability_data_dict[v_id]['images'] = temp_images_data
-                        else:
-                            temp_v_data = {}
-                            temp_v_data['summary'] = summary
-                            temp_v_data['count'] = 1
-                            temp_image_data = f"{image_name}:{image_tag}"
-                            temp_v_data['images'] =  [temp_image_data]
-                        vulnerability_data_dict[v_id] = temp_v_data
+                
+                
+                va_cmd = f'ibmcloud cr va {image_name}:{image_tag} --output json'
+                # print(f"Command: {va_cmd}")
+                va_returnCode, va_output, va_error = cmd_execute(va_cmd)
+                if va_returnCode == 0:
+                    data = va_output[1:-2]
+                    json_data = json.loads(data)
+                    for each_va in json_data['vulnerabilities']:
+                        for each_sn in each_va['security_notices']:
+                            v_id = each_va['cve_id']
+                            summary = each_sn['summary']
+                            all_v_ids = list(vulnerability_data_dict.keys())
+                            if v_id in all_v_ids:
+                                temp_v_data = vulnerability_data_dict[v_id]
+                                vulnerability_data_dict[v_id]['count'] = temp_v_data['count'] + 1
+                                temp_images_data = temp_v_data['images']
+                                temp_images_data.append(f"{image_name}:{image_tag}")
+                                vulnerability_data_dict[v_id]['images'] = temp_images_data
+                            else:
+                                temp_v_data = {}
+                                temp_v_data['summary'] = summary
+                                temp_v_data['count'] = 1
+                                temp_image_data = f"{image_name}:{image_tag}"
+                                temp_v_data['images'] =  [temp_image_data]
+                            vulnerability_data_dict[v_id] = temp_v_data
 
-            else:
-                print(f'{red}\nERROR: Failed to execute "{va_cmd}" Command.{end_color}\n')
-                print(va_error)
-                sys.exit(va_returnCode)
+                else:
+                    print(f'{red}\nERROR: Failed to execute "{va_cmd}" Command.{end_color}\n')
+                    print(va_error)
+                    sys.exit(va_returnCode)
+            images_data.append(['','','','','','',''])
 
-else:
-    print(f'{red}\nERROR: Failed to execute "ibmcloud cr images" Command.{end_color}\n')
-    print(images_error)
-    sys.exit(images_returnCode)
-
-
-v_s_num = 1 
-for v_id in vulnerability_data_dict:
-    summary = vulnerability_data_dict[v_id]['summary']
-    v_count = vulnerability_data_dict[v_id]['count']
-    images = vulnerability_data_dict[v_id]['images']
+    else:
+        print(f'{red}\nERROR: Failed to execute "ibmcloud cr images" Command.{end_color}\n')
+        print(images_error)
+        sys.exit(images_returnCode)
 
 
-    vulnerability_data.append([v_s_num ,v_id, summary, v_count, images])
-    vulnerability_table.add_row([v_s_num ,v_id, summary, v_count, images])
-    v_s_num = v_s_num + 1
+    v_s_num = 1 
+    for v_id in vulnerability_data_dict:
+        summary = vulnerability_data_dict[v_id]['summary']
+        v_count = vulnerability_data_dict[v_id]['count']
+        images = vulnerability_data_dict[v_id]['images']
+
+
+        vulnerability_data.append([v_s_num ,v_id, summary, v_count, images])
+        vulnerability_table.add_row([v_s_num ,v_id, summary, v_count, images])
+        v_s_num = v_s_num + 1
 
 
 
