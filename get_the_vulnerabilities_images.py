@@ -10,6 +10,7 @@ from email.message import EmailMessage
 from datetime import datetime
 
 
+
 SECRET_KEY = sys.argv[1]
 recipient_list = sys.argv[2]
 
