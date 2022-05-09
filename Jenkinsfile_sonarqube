@@ -27,28 +27,21 @@ pipeline {
                 scannerBaseHome = "${HOME}/scannerBaseHome"
                 SCANNER_HOME = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
                 SONAR_SCANNER_OPTS = "-Djavax.net.ssl.trustStore=${HOME}/cacerts"
-                // SONAR_HOST_URL = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
-                SONAR_HOST_URL = "https://sms-sonarqube-intranet.dal1a.cirrus.ibm.com/"
+                SONAR_HOST_URL = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
             }
             steps {
                 script{
-                    AirflowK8s_DIR = "MAP-ETL-Framework-AirflowK8s"
-                    AirflowK8s_DIR_PATH = "${HOME}/${AirflowK8s_DIR}"
-
-                    ETL_Framework_DIR = "MAP-ETL-Framework"
-                    ETL_Framework_DIR_PATH = "${HOME}/${ETL_Framework_DIR}"
-                    
-                    
-                    
+                
                     withCredentials([file(credentialsId: 'ibm_root', variable: 'FILE')]){
                         sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                     }
                     
                     
                     withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
-                        repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC","MAP-ETL-Framework"]
+                        repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC"]
+                        // repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC","MAP-ETL-Framework"]
                         REPO_BASE_PATH = "${HOME}/CIO_MAP"
-                        sh ("mkdir ${REPO_BASE_PATH}")
+                        sh("mkdir ${REPO_BASE_PATH}")
                         for (repo in repoList){
                             REPO_PATH = "${REPO_BASE_PATH}/${repo}"
                             dir("${REPO_PATH}"){
@@ -57,8 +50,7 @@ pipeline {
                                     branch: 'master'
                             }
                             sh("echo -e '\033[1;34m-------- Scanning ${repo} Repo --------\033[0m\n'")
-                            //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
-                            sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login='b2d01ff65f9bc0ec8e735e10e65e53e8dc865435' -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
+                            sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
                         }
                     } 
                 } //script
