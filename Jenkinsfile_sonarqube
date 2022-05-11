@@ -45,7 +45,7 @@ pipeline {
                     
                     
                     
-                    withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
+                    withCredentials([string(credentialsId: 'SONAR_TOKEN_ENTERPRISE', variable: 'SONAR_TOKEN')]){
                         repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC"]
                         // repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC","MAP-ETL-Framework"]
                         REPO_BASE_PATH = "${HOME}/CIO_MAP"
