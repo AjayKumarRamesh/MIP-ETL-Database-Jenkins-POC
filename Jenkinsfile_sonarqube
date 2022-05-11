@@ -36,6 +36,14 @@ pipeline {
                         sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_root' -noprompt -trustcacerts"
                     }
                     
+                    withCredentials([file(credentialsId: 'ibm_sonar_enterprise_cert', variable: 'FILE')]){
+                        sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_sonar' -noprompt -trustcacerts"
+                    }
+                    
+                    
+                    
+                    
+                    
                     
                     withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                         repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC"]
@@ -50,7 +58,8 @@ pipeline {
                                     branch: 'master'
                             }
                             sh("echo -e '\033[1;34m-------- Scanning ${repo} Repo --------\033[0m\n'")
-                            sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
+                            //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
+                            sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN_ENTERPRISE} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
                         }
                     } 
                 } //script
