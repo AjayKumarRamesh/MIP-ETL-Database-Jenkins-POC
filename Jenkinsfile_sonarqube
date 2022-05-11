@@ -27,7 +27,8 @@ pipeline {
                 scannerBaseHome = "${HOME}/scannerBaseHome"
                 SCANNER_HOME = "${scannerBaseHome}/sonar-scanner-4.7.0.2747-linux"
                 SONAR_SCANNER_OPTS = "-Djavax.net.ssl.trustStore=${HOME}/cacerts"
-                SONAR_HOST_URL = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
+                //SONAR_HOST_URL = "https://airflow.map-mktsys-dev.limited-use.ibm.com/sonarqube/"
+                SONAR_HOST_URL = "https://sms-sonarqube-intranet.dal1a.cirrus.ibm.com/"
             }
             steps {
                 script{
