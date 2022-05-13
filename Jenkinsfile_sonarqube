@@ -60,7 +60,7 @@ pipeline {
                             }
                             sh("echo -e '\033[1;34m-------- Scanning ${repo} Repo --------\033[0m\n'")
                             //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
-                            sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java' -Dsonar.branch.name='dev'")
+                            sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='dev'")
                         }
                     } 
                 } //script
