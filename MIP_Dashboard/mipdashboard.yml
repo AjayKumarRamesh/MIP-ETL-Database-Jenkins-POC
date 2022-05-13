@@ -31,6 +31,8 @@ spec:
         - name: mipdashboard
           image: us.icr.io/map-dev-namespace/mipdashboard:latest
           imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
       imagePullSecrets:
         - name: default-us-icr-io
         
@@ -55,6 +57,10 @@ spec:
     port: 5000
     protocol: TCP
     targetPort: 5000
+  - name: 80-tcp
+    port: 80
+    protocol: TCP
+    targetPort: 80
   selector:
     app: mipdashboard
 ---
@@ -74,4 +80,4 @@ spec:
             pathType: ImplementationSpecific
             backend:
               serviceName: mipdashboard
-              servicePort: 3000
+              servicePort: 8080
