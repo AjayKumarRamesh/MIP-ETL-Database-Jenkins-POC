@@ -56,7 +56,7 @@ pipeline {
                             dir("${REPO_PATH}"){
                                 git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${repo}.git",
-                                    branch: 'dev'
+                                    branch: 'master'
                             }
                             sh("echo -e '\033[1;34m-------- Scanning ${repo} Repo --------\033[0m\n'")
                             //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
