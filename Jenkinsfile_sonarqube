@@ -51,13 +51,22 @@ pipeline {
                         // repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC","MAP-ETL-Framework"]
                         REPO_BASE_PATH = "${HOME}/CIO_MAP"
                         sh("mkdir ${REPO_BASE_PATH}")
-                        for (repo in repoList){
+                        for (each_repo in repoList){
                             REPO_PATH = "${REPO_BASE_PATH}/${repo}"
-                            sh ("-------------")
-                            if('MAP-ETL-Framework'.equals(repo)) {
+                            sh ("echo -------------")
+                            // if('MAP-ETL-Framework'.equals(repo)) {
+                            //     branches = ['master','dev','test']
+                            // }
+                            // else if('MAP-ETL-Framework-AirflowK8s'.equals(repo)){
+                            //     branches = ['master','monitoring']
+                            // }
+                            // else {
+                            //     branches = ['master']
+                            // }
+                            if (each_repo == 'MAP-ETL-Framework'){
                                 branches = ['master','dev','test']
                             }
-                            else if('MAP-ETL-Framework-AirflowK8s'.equals(repo)){
+                            else if (each_repo == 'MAP-ETL-Framework-AirflowK8s'){
                                 branches = ['master','monitoring']
                             }
                             else {
@@ -66,12 +75,12 @@ pipeline {
                             for (each_branch in branches){
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
-                                    url: "ssh://git@github.ibm.com/CIO-MAP/${repo}.git",
+                                    url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
                                     branch: ${each_branch}
                                 }
-                                sh("echo -e '\033[1;34m-------- Scanning ${repo} Repo with ${each_branch} Branch --------\033[0m\n'")
-                                //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH}")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${repo} -Dsonar.projectKey=${repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with ${each_branch} Branch --------\033[0m\n'")
+                                //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
                             }   
                         }
                     } 
