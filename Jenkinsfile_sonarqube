@@ -53,6 +53,7 @@ pipeline {
                         sh("mkdir ${REPO_BASE_PATH}")
                         for (repo in repoList){
                             REPO_PATH = "${REPO_BASE_PATH}/${repo}"
+                            sh ("-------------")
                             if('MAP-ETL-Framework'.equals(repo)) {
                                 branches = ['master','dev','test']
                             }
