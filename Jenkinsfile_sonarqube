@@ -50,7 +50,7 @@ pipeline {
                             REPO_PATH = "${REPO_BASE_PATH}/${each_repo}"
                             sh ("echo -------------")
                             if ('MAP-ETL-Framework'.equals(each_repo)) {
-                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
+                                sh("echo -e '\n\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
@@ -58,7 +58,7 @@ pipeline {
                                 }
                                 sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='master'")
 
-                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with dev Branch --------\033[0m\n'")
+                                sh("echo -e '\n\033[1;34m-------- Scanning ${each_repo} Repo with dev Branch --------\033[0m\n'")
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
@@ -66,7 +66,7 @@ pipeline {
                                 }
                                 sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='dev'")
 
-                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with test Branch --------\033[0m\n'")
+                                sh("echo -e '\n\033[1;34m-------- Scanning ${each_repo} Repo with test Branch --------\033[0m\n'")
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
@@ -76,7 +76,7 @@ pipeline {
 
                             }
                             else if ('MAP-ETL-Framework-AirflowK8s'.equals(each_repo)){
-                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
+                                sh("echo -e '\n\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
@@ -84,7 +84,7 @@ pipeline {
                                 }
                                 sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='master'")
 
-                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with monitoring Branch --------\033[0m\n'")
+                                sh("echo -e '\n\033[1;34m-------- Scanning ${each_repo} Repo with monitoring Branch --------\033[0m\n'")
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
@@ -93,7 +93,7 @@ pipeline {
                                 sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='monitoring'")
                             }
                             else {
-                                sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
+                                sh("echo -e '\n\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
                                     url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
