@@ -45,7 +45,7 @@ pipeline {
                     
                     
                     
-                    
+                    sh ("echo ${FILE}")
                     withCredentials([string(credentialsId: 'SONAR_TOKEN_ENTERPRISE', variable: 'SONAR_TOKEN')]){
                         repoList = ["MAP-ETL-Framework"]
                         // repoList = ["MAP-ETL-Framework-AirflowK8s","MIP-ETL-Database-Jenkins-POC","MAP-ETL-Framework"]
