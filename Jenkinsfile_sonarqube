@@ -100,18 +100,7 @@ pipeline {
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
                                 sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
-                            }
-                            
-                            for (each_branch in branches){
-                                dir("${REPO_PATH}"){
-                                    git credentialsId: 'sangita_id_rsa',
-                                    url: "ssh://git@github.ibm.com/CIO-MAP/${each_repo}.git",
-                                    branch: ${each_branch}
-                                }
-                                
-                                //sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH}")
-                                // sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
-                            }   
+                            } 
                         }
                     } 
                 } //script
