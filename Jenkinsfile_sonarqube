@@ -39,6 +39,7 @@ pipeline {
                     
                     withCredentials([file(credentialsId: 'ibm_sonar_enterprise_cert', variable: 'FILE')]){
                         sh "keytool -importcert -keystore ${HOME}/cacerts -storepass changeit -file $FILE -alias 'ibm_sonar' -noprompt -trustcacerts"
+                        file = ${FILE}
                     }
                     
                     
