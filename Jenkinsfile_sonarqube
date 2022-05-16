@@ -54,10 +54,10 @@ pipeline {
                         for (each_repo in repoList){
                             REPO_PATH = "${REPO_BASE_PATH}/${each_repo}"
                             sh ("echo -------------")
-                            if('MAP-ETL-Framework'.equals(repo)) {
+                            if('MAP-ETL-Framework'.equals(each_repo)) {
                                 branches = ['master','dev','test']
                             }
-                            else if('MAP-ETL-Framework-AirflowK8s'.equals(repo)){
+                            else if('MAP-ETL-Framework-AirflowK8s'.equals(each_repo)){
                                 branches = ['master','monitoring']
                             }
                             else {
