@@ -43,7 +43,7 @@ pipeline {
                     
                     
                     withCredentials([string(credentialsId: 'SONAR_TOKEN_ENTERPRISE', variable: 'SONAR_TOKEN')]){
-                        repoList = ["MAP-ETL-Framework-AirflowK8s","MAP-ETL-Framework"]
+                        repoList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s"]
                         REPO_BASE_PATH = "${HOME}/CIO_MAP"
                         sh("mkdir ${REPO_BASE_PATH}")
                         for (each_repo in repoList){
