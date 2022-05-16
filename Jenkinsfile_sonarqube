@@ -56,7 +56,7 @@ pipeline {
                                     branch: 'master'
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='master'")
 
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
@@ -64,7 +64,7 @@ pipeline {
                                     branch: 'dev'
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with dev Branch --------\033[0m\n'")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='dev'")
 
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
@@ -72,7 +72,7 @@ pipeline {
                                     branch: 'test'
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with test Branch --------\033[0m\n'")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='test'")
 
                             }
                             else if ('MAP-ETL-Framework-AirflowK8s'.equals(each_repo)){
@@ -82,7 +82,7 @@ pipeline {
                                     branch: 'master'
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='master'")
 
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
@@ -90,7 +90,7 @@ pipeline {
                                     branch: 'monitoring'
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with monitoring Branch --------\033[0m\n'")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='monitoring'")
                             }
                             else {
                                 dir("${REPO_PATH}"){
@@ -99,7 +99,7 @@ pipeline {
                                     branch: 'master'
                                 }
                                 sh("echo -e '\033[1;34m-------- Scanning ${each_repo} Repo with master Branch --------\033[0m\n'")
-                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name=${each_branch}")
+                                sh("${SCANNER_HOME}/bin/sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName=${each_repo} -Dsonar.projectKey=${each_repo} -Dsonar.projectBaseDir=${REPO_PATH} -Dsonar.exclusions='**/*.java, **/docs/**' -Dsonar.branch.name='master'")
                             } 
                         }
                     } 
