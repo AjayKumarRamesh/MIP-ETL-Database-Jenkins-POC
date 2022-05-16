@@ -54,24 +54,24 @@ pipeline {
                         for (each_repo in repoList){
                             REPO_PATH = "${REPO_BASE_PATH}/${each_repo}"
                             sh ("echo -------------")
-                            // if('MAP-ETL-Framework'.equals(repo)) {
-                            //     branches = ['master','dev','test']
-                            // }
-                            // else if('MAP-ETL-Framework-AirflowK8s'.equals(repo)){
-                            //     branches = ['master','monitoring']
-                            // }
-                            // else {
-                            //     branches = ['master']
-                            // }
-                            if (each_repo == 'MAP-ETL-Framework'){
+                            if('MAP-ETL-Framework'.equals(repo)) {
                                 branches = ['master','dev','test']
                             }
-                            else if (each_repo == 'MAP-ETL-Framework-AirflowK8s'){
+                            else if('MAP-ETL-Framework-AirflowK8s'.equals(repo)){
                                 branches = ['master','monitoring']
                             }
                             else {
                                 branches = ['master']
                             }
+                            // if (each_repo == 'MAP-ETL-Framework'){
+                            //     branches = ['master','dev','test']
+                            // }
+                            // else if (each_repo == 'MAP-ETL-Framework-AirflowK8s'){
+                            //     branches = ['master','monitoring']
+                            // }
+                            // else {
+                            //     branches = ['master']
+                            // }
                             for (each_branch in branches){
                                 dir("${REPO_PATH}"){
                                     git credentialsId: 'sangita_id_rsa',
