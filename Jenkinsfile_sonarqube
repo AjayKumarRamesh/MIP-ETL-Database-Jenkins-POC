@@ -73,34 +73,36 @@ pipeline {
             } //steps
         } //stage (Static Code Analysis)
         stage("Quality Gate Check"){
-            sh("echo Taking data from SonarQube")
-            try{
-                def props = readProperties  file: '.scannerwork/report-task.txt'
-                def Project_key= props['projectKey']
-                sh("echo ${Project_key}")
-                def SonarURL= props['serverUrl']
-                def analysis_url = SonarURL +'/api/qualitygates/project_status?projectKey='+ Project_key
-                echo "$analysis_url"
-                def status
-                timeout(time: 30, unit: 'SECONDS'){
-                    waitUntil {
-                        echo "Fetching Quality Gate status"
-                        def response = httpRequest url:"${analysis_url}"
-                        qualitygate = readJSON text: response.content
-                        status = qualitygate['projectStatus']['status']
-                        echo "Quality gate status = "+ status
-                        return "OK".equals(status)
-                    }
-                } 
-                sh("echo Quality Gate Successful")
+            environment{
+                SONAR_HOST_URL = "https://sms-sonarqube-intranet.dal1a.cirrus.ibm.com/"
             }
-            catch (err){
-                sh ("echo err.toString()")
-                sh ("echo Timeout occured due to Quality Gate failure")
-                error("Build failed because of Quality Gate failure")
-                notifyFailed()
-                throw err
-
+            sh("echo Taking data from SonarQube")
+            projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]    
+            for (each_project in projectList){
+                sh("echo ${each_project}")
+                def analysis_url = "${SONAR_HOST_URL}/api/qualitygates/project_status?projectKey=${each_project}"
+                sh("echo $analysis_url")
+                def status
+                try{
+                    timeout(time: 30, unit: 'SECONDS'){
+                        waitUntil {
+                            sh("echo Fetching Quality Gate status")
+                            def response = httpRequest url:"${analysis_url}"
+                            qualitygate = readJSON text: response.content
+                            status = qualitygate['projectStatus']['status']
+                            sh("echo Quality gate status = ${status}")
+                            return "OK".equals(status)
+                        }
+                    } 
+                    sh("echo Quality Gate Successful")
+                }
+                catch (err){
+                    sh ("echo err.toString()")
+                    sh ("echo Timeout occured due to Quality Gate failure")
+                    error("Build failed because of Quality Gate failure")
+                    notifyFailed()
+                    throw err
+                } 
             }
         } //stage (Quality Gate Check)
     } //stages
