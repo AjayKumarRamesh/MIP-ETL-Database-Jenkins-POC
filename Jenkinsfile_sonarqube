@@ -80,11 +80,12 @@ pipeline {
             steps{
                 sh("echo Taking data from SonarQube")
                 script{
+                    // projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"] 
                     projectList =   ["MAP-ETL-Framework"]
                     for (each_project in projectList){
                         sh("echo ${each_project}")
                         def analysis_url = "${SONAR_HOST_URL}/api/qualitygates/project_status?projectKey=${each_project}"
-                        sh("echo $analysis_url")
+                        sh("echo Analysis URL: $analysis_url")
                         def status
                         try{
                             timeout(time: 30, unit: 'SECONDS'){
@@ -94,10 +95,17 @@ pipeline {
                                     qualitygate = readJSON text: response.content
                                     status = qualitygate['projectStatus']['status']
                                     sh("echo Quality gate status = ${status}")
-                                    return "OK".equals(status)
+                                    // return "OK".equals(status)
+                                    
                                 }
                             } 
-                            sh("echo Quality Gate Successful")
+                            if ('OK'.equals("${status}")){
+                                error "Quality Gate Successful"
+                            }
+                            else {
+                                err "Quality Gate Failed"
+                            }
+        
                         }
                         catch (err){
                             sh ("echo err.toString()")
@@ -107,10 +115,7 @@ pipeline {
                             throw err
                         } 
                     }
-
-                }
-                // projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]   
-                
+                } //script
             } //steps
         } //stage (Quality Gate Check)
     } //stages
