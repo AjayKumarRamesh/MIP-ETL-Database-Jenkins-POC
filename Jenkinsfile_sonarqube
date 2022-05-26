@@ -43,7 +43,7 @@ pipeline {
                     
                     
                     withCredentials([string(credentialsId: 'SONAR_TOKEN_ENTERPRISE', variable: 'SONAR_TOKEN')]){
-                        repoList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]
+                        // repoList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]
                         repoList = ["MAP-ETL-Framework"]
                         REPO_BASE_PATH = "${HOME}/CIO_MAP"
                         sh("mkdir ${REPO_BASE_PATH}")
@@ -79,7 +79,7 @@ pipeline {
             }
             steps{
                 sh("echo Taking data from SonarQube")
-                projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]   
+                // projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]   
                 projectList =   ["MAP-ETL-Framework"]
                 for (each_project in projectList){
                     sh("echo ${each_project}")
