@@ -79,34 +79,38 @@ pipeline {
             }
             steps{
                 sh("echo Taking data from SonarQube")
-                // projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]   
-                projectList =   ["MAP-ETL-Framework"]
-                for (each_project in projectList){
-                    sh("echo ${each_project}")
-                    def analysis_url = "${SONAR_HOST_URL}/api/qualitygates/project_status?projectKey=${each_project}"
-                    sh("echo $analysis_url")
-                    def status
-                    try{
-                        timeout(time: 30, unit: 'SECONDS'){
-                            waitUntil {
-                                sh("echo Fetching Quality Gate status")
-                                def response = httpRequest url:"${analysis_url}"
-                                qualitygate = readJSON text: response.content
-                                status = qualitygate['projectStatus']['status']
-                                sh("echo Quality gate status = ${status}")
-                                return "OK".equals(status)
-                            }
+                script{
+                    projectList =   ["MAP-ETL-Framework"]
+                    for (each_project in projectList){
+                        sh("echo ${each_project}")
+                        def analysis_url = "${SONAR_HOST_URL}/api/qualitygates/project_status?projectKey=${each_project}"
+                        sh("echo $analysis_url")
+                        def status
+                        try{
+                            timeout(time: 30, unit: 'SECONDS'){
+                                waitUntil {
+                                    sh("echo Fetching Quality Gate status")
+                                    def response = httpRequest url:"${analysis_url}"
+                                    qualitygate = readJSON text: response.content
+                                    status = qualitygate['projectStatus']['status']
+                                    sh("echo Quality gate status = ${status}")
+                                    return "OK".equals(status)
+                                }
+                            } 
+                            sh("echo Quality Gate Successful")
+                        }
+                        catch (err){
+                            sh ("echo err.toString()")
+                            sh ("echo Timeout occured due to Quality Gate failure")
+                            error("Build failed because of Quality Gate failure")
+                            notifyFailed()
+                            throw err
                         } 
-                        sh("echo Quality Gate Successful")
                     }
-                    catch (err){
-                        sh ("echo err.toString()")
-                        sh ("echo Timeout occured due to Quality Gate failure")
-                        error("Build failed because of Quality Gate failure")
-                        notifyFailed()
-                        throw err
-                    } 
+
                 }
+                // projectList = ["MAP-ETL-Framework","MAP-ETL-Framework-AirflowK8s", "MIP-ETL-Jenkins-Pipeline", "MIP-Dashboard"]   
+                
             } //steps
         } //stage (Quality Gate Check)
     } //stages
