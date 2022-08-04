@@ -10,7 +10,10 @@ pipeline {
             steps {
 
                 // Installing IBM Cloud
-                sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+                // sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+                
+                // Update IBM Cloud CLI
+                sh('ibmcloud update -f -q')
 
                 // Verify the IBM Cloud CLI Version
                 sh("ibmcloud --version")
@@ -18,7 +21,9 @@ pipeline {
                 // Installing IBM Cloud container-service plugin
                 sh("ibmcloud plugin install container-service -f -q")
                 sh("ibmcloud plugin install container-registry -f -q")
-
+                
+                // List installed IBM Cloud CLI plugins
+                sh('ibmcloud plugin list')
 
                 // Installing Python required packages
                 sh("pip install -r requirements.txt")
@@ -30,7 +35,7 @@ pipeline {
         stage("Fethcing IBM Cloud Conatiner Vulnerabilities Image Inventory"){
             environment{
                 IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
-                recipient_list = 'kolanu.harish@ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com, anmolkapoor@ibm.com'
+                recipient_list = 'bbotev@bg.ibm.com, saghodas@us.ibm.com, akumarr2@in.ibm.com, alex.almanza@ibm.com, Mitko.Dimitrov4@ibm.com, souvik.dutta@ibm.com, Victor.Shcherbatyuk3@ibm.com, yubari@ibm.com'
                 // recipient_list = 'kolanu.harish@ibm.com'
             }
             steps{
