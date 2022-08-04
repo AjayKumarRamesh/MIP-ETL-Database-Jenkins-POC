@@ -21,8 +21,11 @@ pipeline {
         stage("Install IBM Cloud CLI and required Packages") {
             steps {
 
-                // Installing IBM Cloud
+                // Installing IBM Cloud CLI
                 //sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+                
+                // Update IBM Cloud CLI
+                sh('ibmcloud update -f -q')
 
                 // Verify the IBM Cloud CLI Version
                 sh("ibmcloud --version")
@@ -30,7 +33,9 @@ pipeline {
                 // Installing IBM Cloud container-service plugin
                 sh("ibmcloud plugin install container-service -f -q")
                 sh("ibmcloud plugin install container-registry -f -q")
-
+                
+                // List installed IBM Cloud CLI plugins
+                sh('ibmcloud plugin list')
 
                 // Installing Python required packages
                 sh("pip install -r requirements.txt")
