@@ -47,7 +47,7 @@ pipeline {
         stage("DAGs Inventory"){
             environment{
                 IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
-                recipient_list = 'bbotev@bg.ibm.com, saghodas@us.ibm.com'
+                recipient_list = 'bbotev@bg.ibm.com, saghodas@us.ibm.com, akumarr2@in.ibm.com, alex.almanza@ibm.com, Mitko.Dimitrov4@ibm.com, souvik.dutta@ibm.com, Victor.Shcherbatyuk3@ibm.com, yubari@ibm.com'
                 // recipient_list = 'kolanu.harish@ibm.com'
             }
             steps{
