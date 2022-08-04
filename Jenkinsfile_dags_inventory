@@ -1,6 +1,3 @@
-// Assign Liquibase version
-// def LIQUIBASE_VERSION = "4.8.0"
-
 pipeline {
     agent any
     options {
@@ -25,7 +22,7 @@ pipeline {
             steps {
 
                 // Installing IBM Cloud
-                sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
+                //sh("curl -fsSL https://clis.cloud.ibm.com/install/linux | sh")
 
                 // Verify the IBM Cloud CLI Version
                 sh("ibmcloud --version")
@@ -45,7 +42,7 @@ pipeline {
         stage("DAGs Inventory"){
             environment{
                 IBMCLOUD_CREDS = credentials('ibm-cloud-cr')
-                recipient_list = 'kolanu.harish@ibm.com, bbotev@bg.ibm.com, saghodas@us.ibm.com'
+                recipient_list = 'bbotev@bg.ibm.com, saghodas@us.ibm.com'
                 // recipient_list = 'kolanu.harish@ibm.com'
             }
             steps{
